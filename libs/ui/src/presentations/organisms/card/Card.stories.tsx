@@ -1,7 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Card } from './Card';
 import { getAssetSrc } from '../../../utils';
-import { Button } from 'tamagui';
 
 export default {
   component: Card,
