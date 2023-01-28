@@ -262,7 +262,7 @@
         "required": [
           "name",
           "phone",
-          "profile_picture_profile"
+          "profilePictureProfile"
         ],
         "properties": {
           "name": {
@@ -300,7 +300,7 @@
           "id",
           "name",
           "phone",
-          "profile_picture_profile"
+          "profilePictureProfile"
         ],
         "properties": {
           "id": {
@@ -322,7 +322,7 @@
         "required": [
           "name",
           "phone",
-          "profile_picture_profile"
+          "profilePictureProfile"
         ],
         "properties": {
           "name": {
