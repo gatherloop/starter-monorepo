@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Text } from 'tamagui';
+import { Paragraph } from 'tamagui';
 import { Container } from './Container';
 
 export default {
@@ -14,5 +14,5 @@ const Template: ComponentStory<typeof Container> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  children: <Text>Container</Text>,
+  children: <Paragraph>Container</Paragraph>,
 };

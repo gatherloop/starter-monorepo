@@ -1,4 +1,4 @@
-import { Input, Label, Text, YStack } from 'tamagui';
+import { Input, Label, Paragraph, YStack } from 'tamagui';
 
 export interface InputFieldProps {
   label: string;
@@ -21,12 +21,12 @@ export const InputField = (props: InputFieldProps) => {
         onChange={(e) => props.onChange(e.nativeEvent.text)}
       />
       {props.helpTextMessage && (
-        <Text fontSize="$3">{props.helpTextMessage}</Text>
+        <Paragraph fontSize="$2">{props.helpTextMessage}</Paragraph>
       )}
       {props.errorMessage && (
-        <Text color={'$red10Light'} fontSize="$4">
+        <Paragraph color={'$red10Light'} fontSize="$4">
           {props.errorMessage}
-        </Text>
+        </Paragraph>
       )}
     </YStack>
   );
