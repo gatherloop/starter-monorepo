@@ -1,4 +1,3 @@
-import React from 'react';
 import { Paragraph, YStack } from 'tamagui';
 
 export interface InfoLabelProps {
