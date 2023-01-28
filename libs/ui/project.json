@@ -31,7 +31,17 @@
         "ci": {
           "quiet": true
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "gen-contract",
+          "projects": "self"
+        },
+        {
+          "target": "prepare-assets",
+          "projects": "self"
+        }
+      ]
     },
     "build-storybook": {
       "executor": "@nrwl/storybook:build",
@@ -45,7 +55,17 @@
         "ci": {
           "quiet": true
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "gen-contract",
+          "projects": "self"
+        },
+        {
+          "target": "prepare-assets",
+          "projects": "self"
+        }
+      ]
     },
     "gen-contract": {
       "executor": "nx:run-commands",
