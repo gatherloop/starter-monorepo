@@ -1,7 +1,13 @@
 import { createTamagui } from 'tamagui';
 import { config } from '@tamagui/config-base';
+import { createInterFont } from '@tamagui/font-inter';
 
-export const appConfig = createTamagui(config);
+const interFont = createInterFont();
+
+export const appConfig = createTamagui({
+  ...config,
+  fonts: { body: interFont, heading: interFont },
+});
 
 export type AppConfig = typeof appConfig;
 
