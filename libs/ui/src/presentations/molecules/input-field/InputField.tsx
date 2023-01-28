@@ -12,7 +12,7 @@ export interface InputFieldProps {
 
 export const InputField = (props: InputFieldProps) => {
   return (
-    <YStack>
+    <YStack space="$2">
       <Label htmlFor={props.id}>{props.label}</Label>
       <Input
         id={props.id}

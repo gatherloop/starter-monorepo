@@ -16,8 +16,6 @@ Default.args = {
   placeholder: 'Input your name',
   value: '',
   onChange: (value) => console.log(value),
-  helpTextMessage: '',
-  errorMessage: '',
 };
 
 export const HasError = Template.bind({});
@@ -27,7 +25,6 @@ HasError.args = {
   placeholder: 'Input your name',
   value: '',
   onChange: (value) => console.log(value),
-  helpTextMessage: '',
   errorMessage: 'Name must be provided',
 };
 
@@ -39,7 +36,6 @@ HasHelpText.args = {
   value: '',
   onChange: (value) => console.log(value),
   helpTextMessage: 'Make sure you use correct name',
-  errorMessage: '',
 };
 
 export const HasHelpTextAndHasError = Template.bind({});
