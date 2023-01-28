@@ -18,5 +18,4 @@ export const HasBackIcon = Template.bind({});
 HasBackIcon.args = {
   title: 'Edit Course',
   hasBackIcon: true,
-  onBackIconPress: () => console.log(),
 };
