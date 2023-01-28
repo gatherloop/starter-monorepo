@@ -268,7 +268,7 @@
           "name": {
             "type": "string"
           },
-          "phoe": {
+          "phone": {
             "type": "string"
           },
           "profilePictureURL": {
