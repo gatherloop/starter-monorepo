@@ -1,0 +1,126 @@
+{
+  "name": "user-facing",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/user-facing",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/user-facing",
+        "outputPath": "dist/apps/user-facing"
+      },
+      "configurations": {
+        "development": {
+          "outputPath": "apps/user-facing"
+        },
+        "production": {}
+      },
+      "dependsOn": [
+        {
+          "target": "gen-contract",
+          "projects": "dependencies"
+        },
+        {
+          "target": "sync-assets",
+          "projects": "self"
+        }
+      ]
+    },
+    "serve": {
+      "executor": "@nrwl/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "user-facing:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "user-facing:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "user-facing:build:production",
+          "dev": false
+        }
+      },
+      "dependsOn": [
+        {
+          "target": "gen-contract",
+          "projects": "dependencies"
+        },
+        {
+          "target": "sync-assets",
+          "projects": "self"
+        }
+      ]
+    },
+    "export": {
+      "executor": "@nrwl/next:export",
+      "options": {
+        "buildTarget": "user-facing:build:production"
+      },
+      "dependsOn": [
+        {
+          "target": "gen-contract",
+          "projects": "dependencies"
+        },
+        {
+          "target": "sync-assets",
+          "projects": "self"
+        }
+      ]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/user-facing/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "dependsOn": [
+        {
+          "target": "gen-contract",
+          "projects": "dependencies"
+        },
+        {
+          "target": "sync-assets",
+          "projects": "self"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/user-facing/**/*.{ts,tsx,js,jsx}"]
+      },
+      "dependsOn": [
+        {
+          "target": "gen-contract",
+          "projects": "dependencies"
+        },
+        {
+          "target": "sync-assets",
+          "projects": "self"
+        }
+      ]
+    },
+    "sync-assets": {
+      "executor": "@course-explorer-monorepo/plugin:sync-files",
+      "options": {
+        "sourceFolder": "libs/ui/src/assets",
+        "targetFolder": "apps/user-facing/public/assets"
+      },
+      "dependsOn": [
+        {
+          "target": "prepare-assets",
+          "projects": "dependencies"
+        }
+      ]
+    }
+  },
+  "tags": []
+}

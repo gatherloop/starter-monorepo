@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "executors": {
+    "build": {
+      "implementation": "./src/executors/build/executor",
+      "schema": "./src/executors/build/schema.json",
+      "description": "build executor"
+    },
+    "sync-files": {
+      "implementation": "./src/executors/sync-files/executor",
+      "schema": "./src/executors/sync-files/schema.json",
+      "description": "sync-files executor"
+    },
+    "prepare-assets": {
+      "implementation": "./src/executors/prepare-assets/executor",
+      "schema": "./src/executors/prepare-assets/schema.json",
+      "description": "prepare-assets executor"
+    }
+  }
+}

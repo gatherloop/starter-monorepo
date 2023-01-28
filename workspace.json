@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "projects": {
+    "api": "libs/api",
+    "plugin": "libs/plugin",
+    "server": "apps/server",
+    "ui": "libs/ui",
+    "user-facing": "apps/user-facing"
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
+}
