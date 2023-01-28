@@ -99,7 +99,7 @@
         }
       }
     },
-    "/contact/{id}": {
+    "/contacts/{id}": {
       "get": {
         "description": "get contact by id",
         "operationId": "getContactByID",
