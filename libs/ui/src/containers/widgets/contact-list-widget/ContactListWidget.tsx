@@ -12,8 +12,6 @@ export function ContactListWidget(props: ContactListWidgetProps) {
     initialData: props.initialData,
   });
 
-  console.log(data);
-
   const renderView = () => {
     switch (status) {
       case 'idle': {
