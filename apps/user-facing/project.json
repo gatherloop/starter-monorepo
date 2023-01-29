@@ -10,7 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/user-facing",
-        "outputPath": "dist/apps/user-facing"
+        "outputPath": "apps/user-facing/dist"
       },
       "configurations": {
         "development": {
@@ -120,6 +120,22 @@
           "projects": "dependencies"
         }
       ]
+    },
+    "image-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/user-facing",
+        "command": "docker build --platform linux/amd64 -t gatherloop/starter-monorepo-user-facing ."
+      },
+      "dependsOn": [{ "target": "build", "projects": "self" }]
+    },
+    "image-push": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/user-facing",
+        "command": "docker push gatherloop/starter-monorepo-user-facing"
+      },
+      "dependsOn": [{ "target": "image-build", "projects": "self" }]
     }
   },
   "tags": []
