@@ -1,0 +1,34 @@
+{
+  "contacts": [
+    {
+      "id": 1,
+      "name": "M. Nindra Zaka",
+      "phone": "0853728372834",
+      "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    },
+    {
+      "id": 2,
+      "name": "Ilham Surya Pratama",
+      "phone": "085728372614",
+      "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    },
+    {
+      "id": 3,
+      "name": "Andri Purnomo",
+      "phone": "081275838273",
+      "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    },
+    {
+      "id": 4,
+      "name": "Danny Dwi Cahyono",
+      "phone": "085628743726",
+      "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    },
+    {
+      "id": 5,
+      "name": "Samsul",
+      "phone": "0857253728261",
+      "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    }
+  ]
+}
