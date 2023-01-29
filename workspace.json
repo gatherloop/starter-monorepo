@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "api": "libs/api",
+    "mock-server": "apps/mock-server",
     "plugin": "libs/plugin",
     "server": "apps/server",
     "ui": "libs/ui",
