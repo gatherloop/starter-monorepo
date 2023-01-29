@@ -17,26 +17,38 @@
         }
       ]
     },
-    "build:linux": {
+    "build-linux": {
       "executor": "@nx-go/nx-go:build",
       "options": {
         "outputPath": "apps/server/dist/",
         "main": "apps/server/main.go"
       }
     },
-    "build:image": {
+    "image-build": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/server",
         "command": "docker build --platform linux/amd64 -t gatherloop/starter-monorepo-server ."
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "build-linux",
+          "projects": "self"
+        }
+      ]
     },
-    "push:image": {
+    "image-push": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/server",
         "command": "docker push gatherloop/starter-monorepo-server"
-      }
+      },
+      "dependsOn": [
+        {
+          "target": "image-build",
+          "projects": "self"
+        }
+      ]
     },
     "serve": {
       "executor": "@nx-go/nx-go:serve",
