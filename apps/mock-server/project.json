@@ -8,7 +8,8 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npx json-server --watch apps/mock-server/db.json"
+        "cwd": "apps/mock-server",
+        "command": "node index.js"
       }
     }
   }

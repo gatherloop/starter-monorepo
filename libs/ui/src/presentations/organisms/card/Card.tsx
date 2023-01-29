@@ -22,7 +22,9 @@ export function Card(props: CardProps) {
           $gtXs={{ flexDirection: 'row', space: '$5' }}
         >
           {props.items.map(({ label, value }, index) => (
-            <InfoLabel key={index} label={label} value={value} />
+            <YStack key={index} flexBasis={`${100 / props.items.length}%`}>
+              <InfoLabel label={label} value={value} />
+            </YStack>
           ))}
         </YStack>
         {props.rightItem}

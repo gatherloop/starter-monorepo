@@ -23,6 +23,10 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  publicRuntimeConfig: {
+    // TODO: change this default endpoint to vps server later
+    apiURL: process.env.API_URL ?? 'http://localhost:3000',
+  },
 };
 
 module.exports = withTamagui(withNx(nextConfig));
