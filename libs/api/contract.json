@@ -335,6 +335,22 @@
             "type": "string"
           }
         }
+      },
+      "GetContactByID": {
+        "type": "object",
+        "required": [
+          "message",
+          "data"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "$ref": "#/components/schemas/Contact"
+          }
+        }
       }
     }
   }
