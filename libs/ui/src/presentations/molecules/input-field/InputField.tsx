@@ -12,7 +12,7 @@ export interface InputFieldProps {
 
 export const InputField = (props: InputFieldProps) => {
   return (
-    <YStack space="$2">
+    <YStack>
       <Label htmlFor={props.id}>{props.label}</Label>
       <Input
         id={props.id}
@@ -20,14 +20,16 @@ export const InputField = (props: InputFieldProps) => {
         placeholder={props.placeholder}
         onChange={(e) => props.onChange(e.nativeEvent.text)}
       />
-      {props.helpTextMessage && (
-        <Paragraph fontSize="$2">{props.helpTextMessage}</Paragraph>
-      )}
-      {props.errorMessage && (
-        <Paragraph color={'$red10Light'} fontSize="$4">
-          {props.errorMessage}
-        </Paragraph>
-      )}
+      <YStack marginTop="$2">
+        {props.helpTextMessage && (
+          <Paragraph fontSize="$2">{props.helpTextMessage}</Paragraph>
+        )}
+        {props.errorMessage && (
+          <Paragraph color={'$red10Light'} fontSize="$4">
+            {props.errorMessage}
+          </Paragraph>
+        )}
+      </YStack>
     </YStack>
   );
 };
