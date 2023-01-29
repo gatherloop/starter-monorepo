@@ -12,6 +12,8 @@ export function ContactListWidget(props: ContactListWidgetProps) {
     initialData: props.initialData,
   });
 
+  console.log(data);
+
   const renderView = () => {
     switch (status) {
       case 'idle': {
@@ -25,18 +27,20 @@ export function ContactListWidget(props: ContactListWidgetProps) {
       }
       case 'success': {
         if (data.data.length > 0) {
-          <YStack>
-            {data.data.map(({ id, profilePictureURL, name, phone }) => (
-              <Card
-                key={id}
-                avatarImageSrc={profilePictureURL}
-                items={[
-                  { label: 'Name', value: name },
-                  { label: 'Phone', value: phone },
-                ]}
-              />
-            ))}
-          </YStack>;
+          return (
+            <YStack space="$5">
+              {data.data.map(({ id, profilePictureURL, name, phone }) => (
+                <Card
+                  key={id}
+                  avatarImageSrc={profilePictureURL}
+                  items={[
+                    { label: 'Name', value: name },
+                    { label: 'Phone', value: phone },
+                  ]}
+                />
+              ))}
+            </YStack>
+          );
         } else {
           return <Paragraph>Data Empty</Paragraph>;
         }
