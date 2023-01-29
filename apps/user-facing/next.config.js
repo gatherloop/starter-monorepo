@@ -24,6 +24,7 @@ const nextConfig = {
     svgr: false,
   },
   publicRuntimeConfig: {
+    // TODO: change this default endpoint to vps server later
     apiURL: process.env.API_URL ?? 'http://localhost:3000',
   },
 };
