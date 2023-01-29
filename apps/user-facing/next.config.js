@@ -23,6 +23,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  publicRuntimeConfig: {
+    apiURL: process.env.API_URL ?? 'http://localhost:3000',
+  },
 };
 
 module.exports = withTamagui(withNx(nextConfig));

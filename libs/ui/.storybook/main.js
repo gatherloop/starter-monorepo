@@ -18,7 +18,8 @@ module.exports = {
   stories: [
     ...rootMain.stories,
     '../src/**/*.stories.mdx',
-    '../src/**/*.stories.@(js|jsx|ts|tsx)',
+    '../src/presentations/**/*.stories.@(js|jsx|ts|tsx)',
+    '../src/containers/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [...rootMain.addons, '@nrwl/react/plugins/storybook'],
   staticDirs: ['../src'],
