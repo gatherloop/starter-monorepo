@@ -7,7 +7,7 @@
     "build": {
       "executor": "@nx-go/nx-go:build",
       "options": {
-        "outputPath": "dist/apps/server",
+        "outputPath": "apps/server/dist/",
         "main": "apps/server/main.go"
       },
       "dependsOn": [
@@ -16,6 +16,27 @@
           "projects": "dependencies"
         }
       ]
+    },
+    "build:linux": {
+      "executor": "@nx-go/nx-go:build",
+      "options": {
+        "outputPath": "apps/server/dist/",
+        "main": "apps/server/main.go"
+      }
+    },
+    "build:image": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/server",
+        "command": "docker build --platform linux/amd64 -t gatherloop/starter-monorepo-server ."
+      }
+    },
+    "push:image": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/server",
+        "command": "docker push gatherloop/starter-monorepo-server"
+      }
     },
     "serve": {
       "executor": "@nx-go/nx-go:serve",
