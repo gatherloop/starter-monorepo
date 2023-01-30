@@ -123,7 +123,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Contact"
+                  "$ref": "#/components/schemas/GetContactByID"
                 }
               }
             }
@@ -320,10 +320,7 @@
       },
       "GetContactByID": {
         "type": "object",
-        "required": [
-          "message",
-          "data"
-        ],
+        "required": ["message", "data"],
         "properties": {
           "message": {
             "type": "string"
