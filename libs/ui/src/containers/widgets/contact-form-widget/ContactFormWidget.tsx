@@ -1,13 +1,10 @@
-import { contactApi } from 'libs/ui/src/domains';
-import { Form } from 'libs/ui/src/presentations/organisms/form';
+import { Form, FormPops } from 'libs/ui/src/presentations/organisms/form';
 import { GetContactByID } from 'libs/ui/__generated__/contract';
 import React from 'react';
-import { useMutation } from 'react-query';
 import { Paragraph, YStack } from 'tamagui';
 import {
   useGetContactByIdQuery,
   useUpdateContactMutation,
-  useUpdateContactMutationParams,
 } from '../../../machines';
 
 interface ContactFormWidgetProps {
@@ -25,6 +22,8 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     id: props.id,
   });
 
+  const { mutate } = useUpdateContactMutation();
+
   React.useEffect(() => {
     if (data?.data) {
       setName(data.data.name);
@@ -33,33 +32,32 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     }
   }, [data?.data]);
 
-  const fields = [
+  const fields: FormPops['fields'] = [
     {
       label: 'Name',
       id: 'name',
       placeholder: 'Input your name',
       value: name,
-      onChange: (name: string) => setName(name),
+      onChange: setName,
     },
     {
       label: 'Phone',
       id: 'phone',
       placeholder: '082xxxxxxx',
       value: phone,
-      onChange: (phone: string) => setPhone(phone),
+      onChange: setPhone,
     },
     {
       label: 'Profile Picture URL',
       id: 'profilePicture',
       placeholder: 'https://example.com/photo.jpg',
       value: profilePictureURL,
-      onChange: (profilePictureURL: string) =>
-        setProfilePictureUrl(profilePictureURL),
+      onChange: setProfilePictureUrl,
     },
   ];
 
   const handleSubmit = () => {
-    useUpdateContactMutation().mutate({
+    mutate({
       id: props.id,
       payload: {
         name,

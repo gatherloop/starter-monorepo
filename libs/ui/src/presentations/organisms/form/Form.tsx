@@ -3,7 +3,7 @@ import { Button, YStack } from 'tamagui';
 import { Container, InputField, InputFieldProps } from '../../molecules';
 import { SkeletonItem } from '../../molecules/skeleton';
 
-interface FormPops {
+export interface FormPops {
   fields: InputFieldProps[];
   onSubmit: () => void;
 }
