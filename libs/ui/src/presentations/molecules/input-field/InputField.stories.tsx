@@ -1,5 +1,6 @@
 import { InputField } from './InputField';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Skeleton } from '../skeleton';
 
 export default {
   component: InputField,
@@ -40,6 +41,18 @@ HasHelpText.args = {
 
 export const HasHelpTextAndHasError = Template.bind({});
 HasHelpTextAndHasError.args = {
+  id: 'name',
+  label: 'Name',
+  placeholder: 'Input your name',
+  value: '',
+  onChange: (value) => console.log(value),
+  helpTextMessage: 'Make sure you use correct name',
+  errorMessage: 'Name must be provided',
+};
+
+export const IsLoading = Template.bind({});
+IsLoading.decorators = [(Story) => <Skeleton isLoading>{Story()}</Skeleton>];
+IsLoading.args = {
   id: 'name',
   label: 'Name',
   placeholder: 'Input your name',

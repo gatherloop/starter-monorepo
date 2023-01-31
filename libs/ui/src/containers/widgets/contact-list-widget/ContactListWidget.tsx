@@ -1,7 +1,29 @@
+import { Skeleton } from '../../../presentations';
 import { Paragraph, YStack } from 'tamagui';
 import { GetContactsList } from '../../../domains';
 import { useGetContactsQuery } from '../../../machines';
 import { Card } from '../../../presentations';
+
+type ContactListWidgetContentProps = {
+  contacts: GetContactsList['data'];
+};
+
+function ContactListWidgetContent({ contacts }: ContactListWidgetContentProps) {
+  return (
+    <YStack space="$5">
+      {contacts.map(({ id, profilePictureURL, name, phone }) => (
+        <Card
+          key={id}
+          avatarImageSrc={profilePictureURL}
+          items={[
+            { label: 'Name', value: name },
+            { label: 'Phone', value: phone },
+          ]}
+        />
+      ))}
+    </YStack>
+  );
+}
 
 export interface ContactListWidgetProps {
   initialData?: GetContactsList;
@@ -14,31 +36,27 @@ export function ContactListWidget(props: ContactListWidgetProps) {
 
   const renderView = () => {
     switch (status) {
-      case 'idle': {
-        return <Paragraph>Loading...</Paragraph>;
-      }
+      case 'idle':
       case 'loading': {
-        return <Paragraph>Loading...</Paragraph>;
+        return (
+          <Skeleton isLoading>
+            <ContactListWidgetContent
+              contacts={Array.from(Array(3)).map((_, index) => ({
+                id: index,
+                name: 'Lorem ipsum dolor',
+                phone: 'Lorem ipsum dolor',
+                profilePictureURL: 'Lorem ipsum dolor',
+              }))}
+            />
+          </Skeleton>
+        );
       }
       case 'error': {
         return <Paragraph>Error...</Paragraph>;
       }
       case 'success': {
         if (data.data.length > 0) {
-          return (
-            <YStack space="$5">
-              {data.data.map(({ id, profilePictureURL, name, phone }) => (
-                <Card
-                  key={id}
-                  avatarImageSrc={profilePictureURL}
-                  items={[
-                    { label: 'Name', value: name },
-                    { label: 'Phone', value: phone },
-                  ]}
-                />
-              ))}
-            </YStack>
-          );
+          return <ContactListWidgetContent contacts={data.data} />;
         } else {
           return <Paragraph>Data Empty</Paragraph>;
         }
