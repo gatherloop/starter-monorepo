@@ -1,11 +1,11 @@
-import { Form, FormPops } from 'libs/ui/src/presentations/organisms/form';
-import { GetContactByID } from 'libs/ui/__generated__/contract';
+import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
 import React from 'react';
-import { Paragraph, YStack } from 'tamagui';
+import { YStack } from 'tamagui';
 import {
   useGetContactByIdQuery,
   useUpdateContactMutation,
 } from '../../../machines';
+import { GetContactByID } from '../../../domains/';
 
 interface ContactFormWidgetProps {
   initialData?: GetContactByID;
@@ -17,7 +17,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   const [phone, setPhone] = React.useState('');
   const [profilePictureURL, setProfilePictureUrl] = React.useState('');
 
-  const { status, data } = useGetContactByIdQuery({
+  const { status, data, refetch } = useGetContactByIdQuery({
     initialData: props.initialData,
     id: props.id,
   });
@@ -70,13 +70,33 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   const renderView = () => {
     switch (status) {
       case 'idle': {
-        return <Paragraph>Loading...</Paragraph>;
       }
       case 'loading': {
-        return <Paragraph>Loading...</Paragraph>;
+        return (
+          <Skeleton isLoading>
+            <Form
+              fields={[
+                {
+                  id: 'lorem',
+                  label: 'lorem',
+                  value: 'lorem',
+                  placeholder: 'lorem',
+                  errorMessage: 'lorem',
+                  helpTextMessage: 'lorem',
+                  onChange: () => null,
+                },
+              ]}
+              onSubmit={() => null}
+            />
+          </Skeleton>
+        );
       }
       case 'error': {
-        return <Paragraph>Error...</Paragraph>;
+        return (
+          <ErrorView
+            variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
+          />
+        );
       }
       case 'success': {
         return <Form fields={fields} onSubmit={handleSubmit} />;

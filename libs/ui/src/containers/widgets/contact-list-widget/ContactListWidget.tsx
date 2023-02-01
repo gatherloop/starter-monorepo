@@ -1,5 +1,5 @@
 import { Skeleton } from '../../../presentations';
-import { Paragraph, YStack } from 'tamagui';
+import { YStack } from 'tamagui';
 import { GetContactsList } from '../../../domains';
 import { useGetContactsQuery } from '../../../machines';
 import { Card, ErrorView } from '../../../presentations';
