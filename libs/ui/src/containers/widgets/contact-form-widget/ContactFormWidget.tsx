@@ -22,7 +22,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     id: props.id,
   });
 
-  const { mutate } = useUpdateContactMutation();
+  const { mutate, isLoading } = useUpdateContactMutation();
 
   React.useEffect(() => {
     if (data?.data) {
@@ -87,6 +87,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
                 },
               ]}
               onSubmit={() => null}
+              isSubmitting={false}
             />
           </Skeleton>
         );
@@ -99,7 +100,13 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
         );
       }
       case 'success': {
-        return <Form fields={fields} onSubmit={handleSubmit} />;
+        return (
+          <Form
+            fields={fields}
+            onSubmit={handleSubmit}
+            isSubmitting={isLoading}
+          />
+        );
       }
       default:
         break;

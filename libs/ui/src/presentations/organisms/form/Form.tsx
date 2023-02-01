@@ -1,11 +1,11 @@
-import React from 'react';
-import { Button, YStack } from 'tamagui';
+import { Button, Spinner, YStack } from 'tamagui';
 import { Container, InputField, InputFieldProps } from '../../molecules';
 import { SkeletonItem } from '../../molecules/skeleton';
 
 export interface FormPops {
   fields: InputFieldProps[];
   onSubmit: () => void;
+  isSubmitting: boolean;
 }
 
 export const Form = (props: FormPops) => {
@@ -15,11 +15,15 @@ export const Form = (props: FormPops) => {
         {props.fields.map((field) => (
           <InputField key={field.id} {...field} />
         ))}
-        <SkeletonItem>
+        {props.isSubmitting ? (
+          <SkeletonItem>
+            <Spinner size="large" />
+          </SkeletonItem>
+        ) : (
           <Button onPress={props.onSubmit} theme="blue" marginTop="$4">
             Submit
           </Button>
-        </SkeletonItem>
+        )}
       </YStack>
     </Container>
   );
