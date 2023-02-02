@@ -1,14 +1,14 @@
 import { Paragraph, YStack } from 'tamagui';
 import { GetContactsList } from '../../../domains';
 import { useGetContactsQuery } from '../../../machines';
-import { Card } from '../../../presentations';
+import { Card, ErrorView } from '../../../presentations';
 
 export interface ContactListWidgetProps {
   initialData?: GetContactsList;
 }
 
 export function ContactListWidget(props: ContactListWidgetProps) {
-  const { status, data } = useGetContactsQuery({
+  const { status, data, refetch } = useGetContactsQuery({
     initialData: props.initialData,
   });
 
@@ -21,7 +21,11 @@ export function ContactListWidget(props: ContactListWidgetProps) {
         return <Paragraph>Loading...</Paragraph>;
       }
       case 'error': {
-        return <Paragraph>Error...</Paragraph>;
+        return (
+          <ErrorView
+            variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
+          />
+        );
       }
       case 'success': {
         if (data.data.length > 0) {
@@ -40,7 +44,7 @@ export function ContactListWidget(props: ContactListWidgetProps) {
             </YStack>
           );
         } else {
-          return <Paragraph>Data Empty</Paragraph>;
+          return <ErrorView variant={{ tag: 'empty-data' }} />;
         }
       }
     }
