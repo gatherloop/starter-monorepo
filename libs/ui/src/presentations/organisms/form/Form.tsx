@@ -16,13 +16,13 @@ export const Form = (props: FormPops) => {
           <InputField key={field.id} {...field} />
         ))}
         {props.isSubmitting ? (
-          <SkeletonItem>
-            <Spinner size="large" />
-          </SkeletonItem>
+          <Spinner size="large" />
         ) : (
-          <Button onPress={props.onSubmit} theme="blue" marginTop="$4">
-            Submit
-          </Button>
+          <SkeletonItem>
+            <Button onPress={props.onSubmit} theme="blue" marginTop="$4">
+              Submit
+            </Button>
+          </SkeletonItem>
         )}
       </YStack>
     </Container>

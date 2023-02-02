@@ -69,25 +69,14 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
 
   const renderView = () => {
     switch (status) {
-      case 'idle': {
-      }
+      case 'idle':
       case 'loading': {
         return (
           <Skeleton isLoading>
             <Form
-              fields={[
-                {
-                  id: 'lorem',
-                  label: 'lorem',
-                  value: 'lorem',
-                  placeholder: 'lorem',
-                  errorMessage: 'lorem',
-                  helpTextMessage: 'lorem',
-                  onChange: () => null,
-                },
-              ]}
-              onSubmit={() => null}
-              isSubmitting={false}
+              fields={fields}
+              onSubmit={handleSubmit}
+              isSubmitting={isLoading}
             />
           </Skeleton>
         );
