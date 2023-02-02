@@ -1,5 +1,6 @@
 import { Avatar, YStack } from 'tamagui';
 import { InfoLabel, Container, InfoLabelProps } from '../../molecules';
+import { SkeletonItem } from '../../molecules/skeleton';
 
 export interface CardProps {
   avatarImageSrc?: string;
@@ -12,9 +13,11 @@ export function Card(props: CardProps) {
     <Container padding="$6">
       <YStack space="$5" $gtXs={{ flexDirection: 'row', alignItems: 'center' }}>
         {props.avatarImageSrc && (
-          <Avatar circular size="$6" alignSelf="center">
-            <Avatar.Image src={props.avatarImageSrc} />
-          </Avatar>
+          <SkeletonItem variant="circular">
+            <Avatar circular size="$6" alignSelf="center">
+              <Avatar.Image src={props.avatarImageSrc} />
+            </Avatar>
+          </SkeletonItem>
         )}
         <YStack
           space="$2"
@@ -27,7 +30,7 @@ export function Card(props: CardProps) {
             </YStack>
           ))}
         </YStack>
-        {props.rightItem}
+        <SkeletonItem>{props.rightItem}</SkeletonItem>
       </YStack>
     </Container>
   );

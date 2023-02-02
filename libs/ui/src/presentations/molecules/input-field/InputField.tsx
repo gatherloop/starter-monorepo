@@ -1,4 +1,5 @@
 import { Input, Label, Paragraph, YStack } from 'tamagui';
+import { SkeletonItem } from '../skeleton';
 
 export interface InputFieldProps {
   label: string;
@@ -12,24 +13,31 @@ export interface InputFieldProps {
 
 export const InputField = (props: InputFieldProps) => {
   return (
-    <YStack>
-      <Label htmlFor={props.id}>{props.label}</Label>
-      <Input
-        id={props.id}
-        value={props.value}
-        placeholder={props.placeholder}
-        onChange={(e) => props.onChange(e.nativeEvent.text)}
-      />
-      <YStack marginTop="$2">
-        {props.helpTextMessage && (
+    <YStack space="$2">
+      <SkeletonItem variant="inline">
+        <Label htmlFor={props.id}>{props.label}</Label>
+      </SkeletonItem>
+      <SkeletonItem>
+        <Input
+          id={props.id}
+          value={props.value}
+          placeholder={props.placeholder}
+          onChange={(e) => props.onChange(e.nativeEvent.text)}
+        />
+      </SkeletonItem>
+
+      {props.helpTextMessage && (
+        <SkeletonItem variant="inline">
           <Paragraph fontSize="$2">{props.helpTextMessage}</Paragraph>
-        )}
-        {props.errorMessage && (
+        </SkeletonItem>
+      )}
+      {props.errorMessage && (
+        <SkeletonItem variant="inline">
           <Paragraph color={'$red10Light'} fontSize="$4">
             {props.errorMessage}
           </Paragraph>
-        )}
-      </YStack>
+        </SkeletonItem>
+      )}
     </YStack>
   );
 };

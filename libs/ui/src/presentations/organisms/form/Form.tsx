@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, YStack } from 'tamagui';
 import { Container, InputField, InputFieldProps } from '../../molecules';
+import { SkeletonItem } from '../../molecules/skeleton';
 
 interface FormPops {
   fields: InputFieldProps[];
@@ -14,9 +15,11 @@ export const Form = (props: FormPops) => {
         {props.fields.map((field) => (
           <InputField key={field.id} {...field} />
         ))}
-        <Button onPress={props.onSubmit} theme="blue" marginTop="$4">
-          Submit
-        </Button>
+        <SkeletonItem>
+          <Button onPress={props.onSubmit} theme="blue" marginTop="$4">
+            Submit
+          </Button>
+        </SkeletonItem>
       </YStack>
     </Container>
   );
