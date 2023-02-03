@@ -1,6 +1,7 @@
 import {
   GetContactByID,
   CreateContactRequest,
+  UpdateContactRequest,
 } from 'libs/ui/__generated__/contract';
 import { useQuery, useMutation } from 'react-query';
 import { contactApi, GetContactsList } from '../domains';
@@ -15,8 +16,12 @@ export type UseGetContactByIdQuery = {
 };
 
 export type useUpdateContactMutationParams = {
-  payload: CreateContactRequest;
+  payload: UpdateContactRequest;
   id: number;
+};
+
+export type useCreateContactMutationParams = {
+  payload: CreateContactRequest;
 };
 
 export const useGetContactsQuery = ({
@@ -30,9 +35,17 @@ export const useGetContactByIdQuery = ({
 }: UseGetContactByIdQuery) =>
   useQuery('contact', () => contactApi.getContactByID({ id }), {
     initialData,
+    enabled: id ? true : false,
   });
 
 export const useUpdateContactMutation = () =>
   useMutation(({ id, payload }: useUpdateContactMutationParams) =>
     contactApi.updateContactByID({ id, updateContactRequest: payload })
+  );
+
+export const useCreateContactMutation = () =>
+  useMutation(({ payload }: useCreateContactMutationParams) =>
+    contactApi.createContact({
+      createContactRequest: payload,
+    })
   );

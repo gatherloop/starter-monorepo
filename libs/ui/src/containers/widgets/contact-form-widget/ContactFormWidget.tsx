@@ -2,6 +2,7 @@ import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
 import React from 'react';
 import { YStack } from 'tamagui';
 import {
+  useCreateContactMutation,
   useGetContactByIdQuery,
   useUpdateContactMutation,
 } from '../../../machines';
@@ -10,6 +11,7 @@ import { GetContactByID } from '../../../domains/';
 interface ContactFormWidgetProps {
   initialData?: GetContactByID;
   id: number;
+  variant: 'create' | 'update';
 }
 
 export const ContactFormWidget = (props: ContactFormWidgetProps) => {
@@ -22,10 +24,13 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     id: props.id,
   });
 
-  const { mutate, isLoading } = useUpdateContactMutation();
+  const { mutate: mutateUpdate, isLoading: isLoadingUpdate } =
+    useUpdateContactMutation();
+  const { mutate: mutateCreate, isLoading: isLoadingCreate } =
+    useCreateContactMutation();
 
   React.useEffect(() => {
-    if (data?.data) {
+    if (data?.data && props.variant === 'update') {
       setName(data.data.name);
       setPhone(data.data.phone);
       setProfilePictureUrl(data.data.profilePictureURL);
@@ -57,48 +62,67 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   ];
 
   const handleSubmit = () => {
-    mutate({
-      id: props.id,
-      payload: {
-        name,
-        phone,
-        profilePictureURL,
-      },
-    });
+    props.variant === 'create'
+      ? mutateCreate({
+          payload: {
+            name,
+            phone,
+            profilePictureURL,
+          },
+        })
+      : mutateUpdate({
+          id: props.id,
+          payload: {
+            name,
+            phone,
+            profilePictureURL,
+          },
+        });
   };
 
   const renderView = () => {
-    switch (status) {
-      case 'idle':
-      case 'loading': {
-        return (
-          <Skeleton isLoading>
-            <Form
-              fields={fields}
-              onSubmit={handleSubmit}
-              isSubmitting={isLoading}
-            />
-          </Skeleton>
-        );
-      }
-      case 'error': {
-        return (
-          <ErrorView
-            variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
-          />
-        );
-      }
-      case 'success': {
+    switch (props.variant) {
+      case 'create':
         return (
           <Form
             fields={fields}
             onSubmit={handleSubmit}
-            isSubmitting={isLoading}
+            isSubmitting={isLoadingCreate}
           />
         );
-      }
-      default:
-        break;
+      case 'update':
+        switch (status) {
+          case 'idle':
+          case 'loading': {
+            return (
+              <Skeleton isLoading>
+                <Form
+                  fields={fields}
+                  onSubmit={handleSubmit}
+                  isSubmitting={isLoadingUpdate}
+                />
+              </Skeleton>
+            );
+          }
+          case 'error': {
+            return (
+              <ErrorView
+                variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
+              />
+            );
+          }
+          case 'success': {
+            return (
+              <Form
+                fields={fields}
+                onSubmit={handleSubmit}
+                isSubmitting={isLoadingUpdate}
+              />
+            );
+          }
+          default:
+            break;
+        }
     }
   };
 
