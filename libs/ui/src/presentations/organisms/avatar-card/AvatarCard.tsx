@@ -15,7 +15,7 @@ export function AvatarCard(props: AvatarCardProps) {
         {props.avatarImageSrc && (
           <SkeletonItem variant="circular">
             <Avatar circular size="$6" alignSelf="center">
-              <Avatar.Image src={props.avatarImageSrc} />
+              <Avatar.Image defaultSource={{ uri: props.avatarImageSrc }} />
             </Avatar>
           </SkeletonItem>
         )}
