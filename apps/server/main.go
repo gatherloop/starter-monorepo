@@ -7,18 +7,16 @@ import (
 	"course-explorer-monorepo/apps/server/core/repository"
 	"course-explorer-monorepo/apps/server/handler"
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	godotenv.Load()
 
 	// get config
 	cfg := config.Get()
