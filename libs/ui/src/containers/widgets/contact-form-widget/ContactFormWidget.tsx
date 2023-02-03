@@ -2,14 +2,22 @@ import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
 import React from 'react';
 import { YStack } from 'tamagui';
 import {
+  useCreateContactMutation,
   useGetContactByIdQuery,
   useUpdateContactMutation,
 } from '../../../machines';
 import { GetContactByID } from '../../../domains/';
 
+type ContactFormWidgetVariant =
+  | { type: 'create' }
+  | {
+      type: 'update';
+      initialData?: GetContactByID;
+      id: number;
+    };
+
 interface ContactFormWidgetProps {
-  initialData?: GetContactByID;
-  id: number;
+  variant: ContactFormWidgetVariant;
 }
 
 export const ContactFormWidget = (props: ContactFormWidgetProps) => {
@@ -18,11 +26,16 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   const [profilePictureURL, setProfilePictureUrl] = React.useState('');
 
   const { status, data, refetch } = useGetContactByIdQuery({
-    initialData: props.initialData,
-    id: props.id,
+    initialData:
+      props.variant.type === 'update' ? props.variant.initialData : undefined,
+    id: props.variant.type === 'update' ? props.variant.id : 0,
+    enabled: props.variant.type === 'update',
   });
 
-  const { mutate, isLoading } = useUpdateContactMutation();
+  const { mutate: mutateUpdate, isLoading: isLoadingUpdate } =
+    useUpdateContactMutation();
+  const { mutate: mutateCreate, isLoading: isLoadingCreate } =
+    useCreateContactMutation();
 
   React.useEffect(() => {
     if (data?.data) {
@@ -57,48 +70,67 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   ];
 
   const handleSubmit = () => {
-    mutate({
-      id: props.id,
-      payload: {
-        name,
-        phone,
-        profilePictureURL,
-      },
-    });
+    props.variant.type === 'create'
+      ? mutateCreate({
+          payload: {
+            name,
+            phone,
+            profilePictureURL,
+          },
+        })
+      : mutateUpdate({
+          id: props.variant.id,
+          payload: {
+            name,
+            phone,
+            profilePictureURL,
+          },
+        });
   };
 
   const renderView = () => {
-    switch (status) {
-      case 'idle':
-      case 'loading': {
-        return (
-          <Skeleton isLoading>
-            <Form
-              fields={fields}
-              onSubmit={handleSubmit}
-              isSubmitting={isLoading}
-            />
-          </Skeleton>
-        );
-      }
-      case 'error': {
-        return (
-          <ErrorView
-            variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
-          />
-        );
-      }
-      case 'success': {
+    switch (props.variant.type) {
+      case 'create':
         return (
           <Form
             fields={fields}
             onSubmit={handleSubmit}
-            isSubmitting={isLoading}
+            isSubmitting={isLoadingCreate}
           />
         );
-      }
-      default:
-        break;
+      case 'update':
+        switch (status) {
+          case 'idle':
+          case 'loading': {
+            return (
+              <Skeleton isLoading>
+                <Form
+                  fields={fields}
+                  onSubmit={handleSubmit}
+                  isSubmitting={isLoadingUpdate}
+                />
+              </Skeleton>
+            );
+          }
+          case 'error': {
+            return (
+              <ErrorView
+                variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
+              />
+            );
+          }
+          case 'success': {
+            return (
+              <Form
+                fields={fields}
+                onSubmit={handleSubmit}
+                isSubmitting={isLoadingUpdate}
+              />
+            );
+          }
+          default:
+            break;
+        }
     }
   };
 
