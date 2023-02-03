@@ -21,7 +21,6 @@ export const PageHeading = (props: PageHeadingProps) => {
     <XStack
       paddingVertical="$5"
       backgroundColor={'$accent'}
-      justifyContent="space-between"
       alignItems="center"
     >
       <Container>
