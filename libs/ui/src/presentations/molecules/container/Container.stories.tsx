@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Paragraph } from 'tamagui';
+import { Card } from '../card';
 import { Container } from './Container';
 
 export default {
@@ -7,12 +8,14 @@ export default {
 } as ComponentMeta<typeof Container>;
 
 const Template: ComponentStory<typeof Container> = (args) => (
-  <Container height="$20" width="$15" padding="$4" {...args}>
-    {args.children}
-  </Container>
+  <Container {...args}>{args.children}</Container>
 );
 
 export const Default = Template.bind({});
 Default.args = {
-  children: <Paragraph>Container</Paragraph>,
+  children: (
+    <Card padding="$2">
+      <Paragraph>Container</Paragraph>
+    </Card>
+  ),
 };
