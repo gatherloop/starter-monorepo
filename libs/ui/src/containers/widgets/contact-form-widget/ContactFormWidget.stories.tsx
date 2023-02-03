@@ -14,7 +14,6 @@ FormUpdate.args = {
   variant: {
     type: 'update',
     id: 1,
-    enableQuery: true,
   },
 };
 

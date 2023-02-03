@@ -14,7 +14,6 @@ type ContactFormWidgetVariant =
       type: 'update';
       initialData?: GetContactByID;
       id: number;
-      enableQuery: boolean;
     };
 
 interface ContactFormWidgetProps {
@@ -30,8 +29,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     initialData:
       props.variant.type === 'update' ? props.variant.initialData : undefined,
     id: props.variant.type === 'update' ? props.variant.id : 0,
-    enabled:
-      props.variant.type === 'update' ? props.variant.enableQuery : false,
+    enabled: props.variant.type === 'update',
   });
 
   const { mutate: mutateUpdate, isLoading: isLoadingUpdate } =
@@ -40,7 +38,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     useCreateContactMutation();
 
   React.useEffect(() => {
-    if (data?.data && props.variant.type === 'update') {
+    if (data?.data) {
       setName(data.data.name);
       setPhone(data.data.phone);
       setProfilePictureUrl(data.data.profilePictureURL);
