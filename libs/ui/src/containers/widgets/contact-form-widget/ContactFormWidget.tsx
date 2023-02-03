@@ -8,10 +8,17 @@ import {
 } from '../../../machines';
 import { GetContactByID } from '../../../domains/';
 
+type ContactFormWidgetVariant =
+  | { type: 'create' }
+  | {
+      type: 'update';
+      initialData?: GetContactByID;
+      id: number;
+      enableQuery: boolean;
+    };
+
 interface ContactFormWidgetProps {
-  initialData?: GetContactByID;
-  id: number;
-  variant: 'create' | 'update';
+  variant: ContactFormWidgetVariant;
 }
 
 export const ContactFormWidget = (props: ContactFormWidgetProps) => {
@@ -20,8 +27,11 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   const [profilePictureURL, setProfilePictureUrl] = React.useState('');
 
   const { status, data, refetch } = useGetContactByIdQuery({
-    initialData: props.initialData,
-    id: props.id,
+    initialData:
+      props.variant.type === 'update' ? props.variant.initialData : undefined,
+    id: props.variant.type === 'update' ? props.variant.id : 0,
+    enabled:
+      props.variant.type === 'update' ? props.variant.enableQuery : false,
   });
 
   const { mutate: mutateUpdate, isLoading: isLoadingUpdate } =
@@ -30,7 +40,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     useCreateContactMutation();
 
   React.useEffect(() => {
-    if (data?.data && props.variant === 'update') {
+    if (data?.data && props.variant.type === 'update') {
       setName(data.data.name);
       setPhone(data.data.phone);
       setProfilePictureUrl(data.data.profilePictureURL);
@@ -62,7 +72,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   ];
 
   const handleSubmit = () => {
-    props.variant === 'create'
+    props.variant.type === 'create'
       ? mutateCreate({
           payload: {
             name,
@@ -71,7 +81,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
           },
         })
       : mutateUpdate({
-          id: props.id,
+          id: props.variant.id,
           payload: {
             name,
             phone,
@@ -81,7 +91,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   };
 
   const renderView = () => {
-    switch (props.variant) {
+    switch (props.variant.type) {
       case 'create':
         return (
           <Form

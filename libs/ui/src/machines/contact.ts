@@ -13,6 +13,7 @@ export type UseGetContactsQueryParams = {
 export type UseGetContactByIdQuery = {
   initialData?: GetContactByID;
   id: number;
+  enabled?: boolean;
 };
 
 export type useUpdateContactMutationParams = {
@@ -32,10 +33,11 @@ export const useGetContactsQuery = ({
 export const useGetContactByIdQuery = ({
   initialData,
   id,
+  enabled,
 }: UseGetContactByIdQuery) =>
   useQuery('contact', () => contactApi.getContactByID({ id }), {
     initialData,
-    enabled: id ? true : false,
+    enabled,
   });
 
 export const useUpdateContactMutation = () =>

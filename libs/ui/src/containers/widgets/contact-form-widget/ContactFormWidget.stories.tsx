@@ -9,13 +9,18 @@ const Template: ComponentStory<typeof ContactFormWidget> = (args) => (
   <ContactFormWidget {...args} />
 );
 
-export const FormEdit = Template.bind({});
-FormEdit.args = {
-  id: 1,
-  variant: 'update',
+export const FormUpdate = Template.bind({});
+FormUpdate.args = {
+  variant: {
+    type: 'update',
+    id: 1,
+    enableQuery: true,
+  },
 };
 
 export const FormCreate = Template.bind({});
 FormCreate.args = {
-  variant: 'create',
+  variant: {
+    type: 'create',
+  },
 };
