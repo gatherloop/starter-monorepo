@@ -10,10 +10,11 @@ export function Container(props: ContainerProps) {
     <YStack
       marginHorizontal="auto"
       width="100%"
-      $gtSm={{ width: 768 }}
-      $gtMd={{ width: 1024 }}
+      $gtXs={{ width: 660 }}
+      $gtSm={{ width: 800 }}
+      $gtMd={{ width: 1020 }}
       $gtLg={{ width: 1280 }}
-      paddingHorizontal="$1"
+      paddingHorizontal="$3"
     >
       {props.children}
     </YStack>

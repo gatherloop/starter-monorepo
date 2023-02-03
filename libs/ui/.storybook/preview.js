@@ -19,7 +19,7 @@ export const decorators = [
     return (
       <TamaguiProvider config={appConfig} defaultTheme={theme}>
         <QueryClientProvider client={queryClient}>
-          <YStack height="100vh" padding="$5" backgroundColor={'$background'}>
+          <YStack height="100vh" backgroundColor={'$background'}>
             {Story()}
           </YStack>
         </QueryClientProvider>
