@@ -1,16 +1,21 @@
 import React from 'react';
-import { YStack, YStackProps } from 'tamagui';
+import { YStack } from 'tamagui';
 
-interface ContainerProps extends YStackProps {
+export interface ContainerProps {
   children: React.ReactNode;
 }
 
-export const Container = (props: ContainerProps) => {
+export function Container(props: ContainerProps) {
   return (
-    <YStack {...props} backgroundColor={'$accent'} borderRadius="$6">
+    <YStack
+      marginHorizontal="auto"
+      width="100%"
+      $gtSm={{ width: 768 }}
+      $gtMd={{ width: 1024 }}
+      $gtLg={{ width: 1280 }}
+      paddingHorizontal="$1"
+    >
       {props.children}
     </YStack>
   );
-};
-
-export default Container;
+}

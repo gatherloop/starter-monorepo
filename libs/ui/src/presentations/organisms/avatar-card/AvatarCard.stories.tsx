@@ -1,13 +1,15 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Card } from './Card';
+import { AvatarCard } from './AvatarCard';
 import { getAssetSrc } from '../../../utils';
 import { Skeleton } from '../../molecules/skeleton';
 
 export default {
-  component: Card,
-} as ComponentMeta<typeof Card>;
+  component: AvatarCard,
+} as ComponentMeta<typeof AvatarCard>;
 
-const Template: ComponentStory<typeof Card> = (args) => <Card {...args} />;
+const Template: ComponentStory<typeof AvatarCard> = (args) => (
+  <AvatarCard {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
