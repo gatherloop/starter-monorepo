@@ -1,10 +1,10 @@
 services:
-  contact-apps-database:
+  starter-monorepo-database:
     platform: linux/amd64
     image: mysql
-    container_name: mysql
+    container_name: starter-monorepo-database
     ports:
-      - 3307:3306
+      - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=contact-apps
@@ -13,16 +13,16 @@ services:
       timeout: 20s
       retries: 10
     networks:
-      - contact-apps
+      - starter-monorepo-networks
     volumes:
-      - contact-apps:/var/lib/mysql
+      - starter-monorepo-volumes:/var/lib/mysql
       - ./contact_app_contacts.sql:/docker-entrypoint-initdb.d/contact-apps.sql
   starter-monorepo-server:
     platform: linux/amd64
     image: gatherloop/starter-monorepo-server
     container_name: starter-monorepo-server
     environment:
-      - HOST=mysql
+      - HOST=starter-monorepo-database
       - PORT=3306
       - USERNAME=root
       - PASSWORD=root
@@ -31,14 +31,14 @@ services:
     ports:
       - 5101:3000
     depends_on:
-      contact-apps-database:
+      starter-monorepo-database:
         condition: service_healthy
     networks:
-      - contact-apps
+      - starter-monorepo-networks
 
 networks:
-  contact-apps:
-    name: contact-apps
+  starter-monorepo-networks:
+    name: starter-monorepo-networks
 volumes:
-  contact-apps:
-    name: contact-apps
+  starter-monorepo-volumes:
+    name: starter-monorepo-volumes
