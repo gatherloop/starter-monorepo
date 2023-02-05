@@ -1,7 +1,7 @@
 import { ContactApi } from '../../__generated__/contract';
 import { config } from './config';
 
-export {
+export type {
   GetContactsList,
   GetContactByID,
   Contact,

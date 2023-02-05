@@ -6,8 +6,7 @@ import { setConfig } from 'next/config';
 
 setConfig({
   publicRuntimeConfig: {
-    // TODO: change this default endpoint to vps server later
-    apiURL: 'http://localhost:3000',
+    apiURL: 'https://gw-starter.gatherloop.co',
   },
 });
 
