@@ -20,7 +20,7 @@ services:
     container_name: starter-monorepo-server
     environment:
       - HOST=mysql
-      - PORT=3307
+      - PORT=3306
       - USERNAME=root
       - PASSWORD=root
       - DATABASE_NAME=contact-apps
