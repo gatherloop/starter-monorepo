@@ -3,7 +3,6 @@ import { appConfig } from '../src/tamagui.config';
 import { useDarkMode } from 'storybook-dark-mode';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { setConfig } from 'next/config';
-import { Container } from '../src/presentations';
 
 setConfig({
   publicRuntimeConfig: {
@@ -21,7 +20,7 @@ export const decorators = [
       <TamaguiProvider config={appConfig} defaultTheme={theme}>
         <QueryClientProvider client={queryClient}>
           <YStack height="100vh" backgroundColor={'$background'}>
-            <Container>{Story()}</Container>
+            {Story()}
           </YStack>
         </QueryClientProvider>
       </TamaguiProvider>

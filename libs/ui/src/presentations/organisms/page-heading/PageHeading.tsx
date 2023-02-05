@@ -6,7 +6,7 @@ interface PageHeadingProps {
   title: string;
   hasBackIcon?: boolean;
   onBackIconPress?: () => void;
-  rightItem: React.ReactNode;
+  rightItem?: React.ReactNode;
 }
 
 const backIconSrc = {

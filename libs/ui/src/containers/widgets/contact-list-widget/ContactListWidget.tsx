@@ -1,24 +1,36 @@
 import { Skeleton } from '../../../presentations';
-import { YStack } from 'tamagui';
-import { GetContactsList } from '../../../domains';
+import { Button, YStack } from 'tamagui';
+import { Contact, GetContactsList } from '../../../domains';
 import { useGetContactsQuery } from '../../../machines';
-import { Card, ErrorView } from '../../../presentations';
+import { AvatarCard, ErrorView } from '../../../presentations';
 
 type ContactListWidgetContentProps = {
   contacts: GetContactsList['data'];
+  onEditButtonPress?: (contact: Contact) => void;
 };
 
-function ContactListWidgetContent({ contacts }: ContactListWidgetContentProps) {
+function ContactListWidgetContent({
+  contacts,
+  onEditButtonPress,
+}: ContactListWidgetContentProps) {
   return (
     <YStack space="$5">
-      {contacts.map(({ id, profilePictureURL, name, phone }) => (
-        <Card
-          key={id}
-          avatarImageSrc={profilePictureURL}
+      {contacts.map((contact) => (
+        <AvatarCard
+          key={contact.id}
+          avatarImageSrc={contact.profilePictureURL}
           items={[
-            { label: 'Name', value: name },
-            { label: 'Phone', value: phone },
+            { label: 'Name', value: contact.name },
+            { label: 'Phone', value: contact.phone },
           ]}
+          rightItem={
+            <Button
+              theme="blue"
+              onPress={onEditButtonPress && (() => onEditButtonPress(contact))}
+            >
+              Edit
+            </Button>
+          }
         />
       ))}
     </YStack>
@@ -27,6 +39,7 @@ function ContactListWidgetContent({ contacts }: ContactListWidgetContentProps) {
 
 export interface ContactListWidgetProps {
   initialData?: GetContactsList;
+  onEditButtonPress?: (contact: Contact) => void;
 }
 
 export function ContactListWidget(props: ContactListWidgetProps) {
@@ -60,7 +73,12 @@ export function ContactListWidget(props: ContactListWidgetProps) {
       }
       case 'success': {
         if (data.data.length > 0) {
-          return <ContactListWidgetContent contacts={data.data} />;
+          return (
+            <ContactListWidgetContent
+              contacts={data.data}
+              onEditButtonPress={props.onEditButtonPress}
+            />
+          );
         } else {
           return <ErrorView variant={{ tag: 'empty-data' }} />;
         }
@@ -68,9 +86,5 @@ export function ContactListWidget(props: ContactListWidgetProps) {
     }
   };
 
-  return (
-    <YStack alignItems="center" justifyContent="center">
-      {renderView()}
-    </YStack>
-  );
+  return <YStack>{renderView()}</YStack>;
 }
