@@ -1,0 +1,36 @@
+services:
+  contact-apps-database:
+    platform: linux/amd64
+    image: mysql
+    container_name: mysql
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=contact-apps
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
+      timeout: 20s
+      retries: 10
+    networks:
+      - contact-apps
+  starter-monorepo-server:
+    platform: linux/amd64
+    image: gatherloop/starter-monorepo-server
+    container_name: starter-monorepo-server
+    environment:
+      - HOST=mysql
+      - PORT=3307
+      - USERNAME=root
+      - PASSWORD=root
+      - DATABASE_NAME=contact-apps
+      - SERVER_PORT=3000
+    depends_on:
+      contact-apps-database:
+        condition: service_healthy
+    networks:
+      - contact-apps
+
+networks:
+  contact-apps:
+    name: contact-apps
