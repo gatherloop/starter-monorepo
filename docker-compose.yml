@@ -9,7 +9,7 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=contact-apps
     healthcheck:
-      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       timeout: 20s
       retries: 10
     networks:
@@ -33,6 +33,16 @@ services:
     depends_on:
       starter-monorepo-database:
         condition: service_healthy
+    networks:
+      - starter-monorepo-networks
+  starter-monorepo-user-facing:
+    platform: linux/amd64
+    image: gatherloop/starter-monorepo-user-facing
+    container_name: starter-monorepo-user-facing
+    environment:
+      - API_URL=https://gw-starter.gatherloop.co
+    ports:
+      - 5100:3000
     networks:
       - starter-monorepo-networks
 
