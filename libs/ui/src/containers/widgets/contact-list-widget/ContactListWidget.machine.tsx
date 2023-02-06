@@ -24,6 +24,7 @@ const reducer = (state: State, action: Action): State => {
       type: 'error',
       message: action.message,
     }))
+    .with([{ type: 'error' }, { type: 'FETCH' }], () => ({ type: 'loading' }))
     .otherwise(() => state);
 };
 
