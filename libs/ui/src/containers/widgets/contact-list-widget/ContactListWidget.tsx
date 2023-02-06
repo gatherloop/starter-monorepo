@@ -1,8 +1,9 @@
 import { Skeleton } from '../../../presentations';
 import { Button, YStack } from 'tamagui';
 import { Contact, GetContactsList } from '../../../domains';
-import { useGetContactsQuery } from '../../../machines';
 import { AvatarCard, ErrorView } from '../../../presentations';
+import { useContactListWidgetMachine } from './ContactListWidget.machine';
+import { match } from 'ts-pattern';
 
 type ContactListWidgetContentProps = {
   contacts: GetContactsList['data'];
@@ -43,47 +44,41 @@ export interface ContactListWidgetProps {
 }
 
 export function ContactListWidget(props: ContactListWidgetProps) {
-  const { status, data, refetch } = useGetContactsQuery({
-    initialData: props.initialData,
-  });
+  const [state, dispatch] = useContactListWidgetMachine(props.initialData);
 
   const renderView = () => {
-    switch (status) {
-      case 'idle':
-      case 'loading': {
-        return (
-          <Skeleton isLoading>
-            <ContactListWidgetContent
-              contacts={Array.from(Array(3)).map((_, index) => ({
-                id: index,
-                name: 'Lorem ipsum dolor',
-                phone: 'Lorem ipsum dolor',
-                profilePictureURL: 'Lorem ipsum dolor',
-              }))}
-            />
-          </Skeleton>
-        );
-      }
-      case 'error': {
-        return (
-          <ErrorView
-            variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
+    return match(state)
+      .with({ type: 'idle' }, { type: 'loading' }, () => (
+        <Skeleton isLoading>
+          <ContactListWidgetContent
+            contacts={Array.from(Array(3)).map((_, index) => ({
+              id: index,
+              name: 'Lorem ipsum dolor',
+              phone: 'Lorem ipsum dolor',
+              profilePictureURL: 'Lorem ipsum dolor',
+            }))}
           />
+        </Skeleton>
+      ))
+      .with({ type: 'error' }, () => (
+        <ErrorView
+          variant={{
+            tag: 'fetching-error',
+            onRetryButtonPress: () => dispatch({ type: 'FETCH' }),
+          }}
+        />
+      ))
+      .with({ type: 'success' }, (state) => {
+        return state.data.data.length > 0 ? (
+          <ContactListWidgetContent
+            contacts={state.data.data}
+            onEditButtonPress={props.onEditButtonPress}
+          />
+        ) : (
+          <ErrorView variant={{ tag: 'empty-data' }} />
         );
-      }
-      case 'success': {
-        if (data.data.length > 0) {
-          return (
-            <ContactListWidgetContent
-              contacts={data.data}
-              onEditButtonPress={props.onEditButtonPress}
-            />
-          );
-        } else {
-          return <ErrorView variant={{ tag: 'empty-data' }} />;
-        }
-      }
-    }
+      })
+      .otherwise(() => null);
   };
 
   return <YStack>{renderView()}</YStack>;
