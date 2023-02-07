@@ -1,4 +1,4 @@
-import { contactApi, CreateContactRequest } from 'libs/ui/src/domains';
+import { contactApi } from 'libs/ui/src/domains';
 import { ContactFormWidgetProps } from './ContactFormWidget';
 
 export type GetContactForm = Extract<

@@ -1,2 +1,2 @@
 export * from './contact-list-screen';
-export * from './contact-form-screen';
+export * from './contact-update-screen';

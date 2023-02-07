@@ -5,7 +5,6 @@ export type {
   GetContactsList,
   GetContactByID,
   Contact,
-  CreateContactRequest,
 } from '../../__generated__/contract';
 
 export const contactApi = new ContactApi(config);
