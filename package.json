@@ -65,6 +65,7 @@
     "prettier": "2.8.3",
     "react-refresh": "^0.14.0",
     "react-test-renderer": "18.2.0",
+    "storybook-addon-next-router": "^4.0.2",
     "storybook-dark-mode": "^2.0.5",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",

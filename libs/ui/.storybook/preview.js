@@ -3,10 +3,11 @@ import { appConfig } from '../src/tamagui.config';
 import { useDarkMode } from 'storybook-dark-mode';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { setConfig } from 'next/config';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 setConfig({
   publicRuntimeConfig: {
-    apiURL: 'https://gw-starter.gatherloop.co',
+    apiURL: 'http://localhost:3000',
   },
 });
 
@@ -29,4 +30,7 @@ export const decorators = [
 
 export const parameters = {
   layout: 'fullscreen',
+  nextRouter: {
+    Provider: RouterContext.Provider,
+  },
 };

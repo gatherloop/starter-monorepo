@@ -1,11 +1,11 @@
-import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
-import React from 'react';
-import { YStack } from 'tamagui';
 import {
   useCreateContactMutation,
   useGetContactByIdQuery,
   useUpdateContactMutation,
-} from '../../../machines';
+} from 'libs/ui/src/machines';
+import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
+import React from 'react';
+import { YStack } from 'tamagui';
 import { GetContactByID } from '../../../domains/';
 
 type ContactFormWidgetVariant =
@@ -16,7 +16,7 @@ type ContactFormWidgetVariant =
       id: number;
     };
 
-interface ContactFormWidgetProps {
+export interface ContactFormWidgetProps {
   variant: ContactFormWidgetVariant;
 }
 
@@ -44,7 +44,6 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
       setProfilePictureUrl(data.data.profilePictureURL);
     }
   }, [data?.data]);
-
   const fields: FormPops['fields'] = [
     {
       label: 'Name',
@@ -115,7 +114,10 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
           case 'error': {
             return (
               <ErrorView
-                variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
+                variant={{
+                  tag: 'fetching-error',
+                  onRetryButtonPress: refetch,
+                }}
               />
             );
           }
