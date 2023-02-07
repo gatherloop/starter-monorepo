@@ -1,12 +1,11 @@
 import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
 import React from 'react';
 import { YStack } from 'tamagui';
-import {
-  useCreateContactMutation,
-  useGetContactByIdQuery,
-  useUpdateContactMutation,
-} from '../../../machines';
 import { GetContactByID } from '../../../domains/';
+import {
+  mutateCreateContact,
+  mutateUpdateContact,
+} from './ContactFormWidget.fetcher';
 
 type ContactFormWidgetVariant =
   | { type: 'create' }
@@ -16,7 +15,7 @@ type ContactFormWidgetVariant =
       id: number;
     };
 
-interface ContactFormWidgetProps {
+export interface ContactFormWidgetProps {
   variant: ContactFormWidgetVariant;
 }
 
@@ -24,26 +23,19 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   const [name, setName] = React.useState('');
   const [phone, setPhone] = React.useState('');
   const [profilePictureURL, setProfilePictureUrl] = React.useState('');
-
-  const { status, data, refetch } = useGetContactByIdQuery({
-    initialData:
-      props.variant.type === 'update' ? props.variant.initialData : undefined,
-    id: props.variant.type === 'update' ? props.variant.id : 0,
-    enabled: props.variant.type === 'update',
-  });
-
-  const { mutate: mutateUpdate, isLoading: isLoadingUpdate } =
-    useUpdateContactMutation();
-  const { mutate: mutateCreate, isLoading: isLoadingCreate } =
-    useCreateContactMutation();
+  const [status, setStatus] = React.useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('loading');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   React.useEffect(() => {
-    if (data?.data) {
-      setName(data.data.name);
-      setPhone(data.data.phone);
-      setProfilePictureUrl(data.data.profilePictureURL);
+    if (props.variant.type === 'update' && props.variant.initialData) {
+      setName(props.variant.initialData.data.name);
+      setPhone(props.variant.initialData.data.phone);
+      setProfilePictureUrl(props.variant.initialData.data.profilePictureURL);
+      setStatus('success');
     }
-  }, [data?.data]);
+  }, []);
 
   const fields: FormPops['fields'] = [
     {
@@ -69,23 +61,24 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     props.variant.type === 'create'
-      ? mutateCreate({
+      ? await mutateCreateContact({
           payload: {
             name,
             phone,
             profilePictureURL,
           },
-        })
-      : mutateUpdate({
+        }).then(() => setIsSubmitting(true))
+      : mutateUpdateContact({
           id: props.variant.id,
           payload: {
             name,
             phone,
             profilePictureURL,
           },
-        });
+        }).then(() => setIsSubmitting(true));
+    setIsSubmitting(false);
   };
 
   const renderView = () => {
@@ -95,7 +88,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
           <Form
             fields={fields}
             onSubmit={handleSubmit}
-            isSubmitting={isLoadingCreate}
+            isSubmitting={isSubmitting}
           />
         );
       case 'update':
@@ -107,7 +100,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
                 <Form
                   fields={fields}
                   onSubmit={handleSubmit}
-                  isSubmitting={isLoadingUpdate}
+                  isSubmitting={isSubmitting}
                 />
               </Skeleton>
             );
@@ -115,7 +108,10 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
           case 'error': {
             return (
               <ErrorView
-                variant={{ tag: 'fetching-error', onRetryButtonPress: refetch }}
+                variant={{
+                  tag: 'fetching-error',
+                  onRetryButtonPress: () => null,
+                }}
               />
             );
           }
@@ -124,7 +120,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
               <Form
                 fields={fields}
                 onSubmit={handleSubmit}
-                isSubmitting={isLoadingUpdate}
+                isSubmitting={isSubmitting}
               />
             );
           }
