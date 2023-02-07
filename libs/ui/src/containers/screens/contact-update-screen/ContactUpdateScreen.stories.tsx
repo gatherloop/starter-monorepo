@@ -11,11 +11,10 @@ const Template: ComponentStory<typeof ContactUpdateScreen> = (args) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  type: 'update',
   id: 1,
 };
 Default.parameters = {
   nextRouter: {
-    path: '/',
+    path: '/contact/[id]',
   },
 };

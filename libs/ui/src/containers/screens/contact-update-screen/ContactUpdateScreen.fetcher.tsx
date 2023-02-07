@@ -1,11 +1,9 @@
-import {
-  GetContactForm,
-  getContactFormWidgetInitialData,
-} from '../../widgets/contact-form-widget/ContactFormWidget.fetcher';
+import { getContactFormWidgetInitialData } from '../../widgets/contact-form-widget/ContactFormWidget.fetcher';
+import { ContactUpdateScreenProps } from './ContactUpdateScreen';
 
 export async function getContactUpdateScreenProps(
   id: number
-): Promise<GetContactForm['initialData']> {
+): Promise<ContactUpdateScreenProps> {
   const contact = await getContactFormWidgetInitialData(id);
-  return contact;
+  return { initialData: contact, id };
 }

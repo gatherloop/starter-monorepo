@@ -2,9 +2,14 @@ import { Container, PageHeading } from 'libs/ui/src/presentations';
 import { useRouter } from 'next/router';
 import { YStack } from 'tamagui';
 import { ContactFormWidget } from '../../widgets';
-import { GetContactForm } from '../../widgets/contact-form-widget/ContactFormWidget.fetcher';
+import { GetContactByID } from '../../../domains/';
 
-export const ContactUpdateScreen = (props: GetContactForm) => {
+export interface ContactUpdateScreenProps {
+  id: number;
+  initialData: GetContactByID;
+}
+
+export const ContactUpdateScreen = (props: ContactUpdateScreenProps) => {
   const router = useRouter();
 
   return (
@@ -17,7 +22,7 @@ export const ContactUpdateScreen = (props: GetContactForm) => {
       <Container>
         <ContactFormWidget
           variant={{
-            type: props.type,
+            type: 'update',
             id: props.id,
             initialData: props.initialData,
           }}
