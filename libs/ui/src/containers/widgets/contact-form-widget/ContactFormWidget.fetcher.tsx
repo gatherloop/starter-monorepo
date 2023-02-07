@@ -12,15 +12,3 @@ export async function getContactFormWidgetInitialData(
   const initialData = await contactApi.getContactByID({ id });
   return initialData;
 }
-
-type mutateUpdateContactParams = {
-  id: number;
-  payload: CreateContactRequest;
-};
-
-export async function mutateUpdateContact({
-  id,
-  payload,
-}: mutateUpdateContactParams) {
-  return contactApi.updateContactByID({ id, updateContactRequest: payload });
-}

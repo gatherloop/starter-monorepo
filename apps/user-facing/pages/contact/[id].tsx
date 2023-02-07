@@ -1,6 +1,6 @@
 import {
   ContactUpdateScreen,
-  getContactFormScreenProps,
+  getContactUpdateScreenProps,
 } from '@course-explorer-monorepo/ui';
 import { GetContactForm } from 'libs/ui/src/containers/widgets/contact-form-widget/ContactFormWidget.fetcher';
 import { GetServerSideProps } from 'next';
@@ -8,7 +8,7 @@ import { GetServerSideProps } from 'next';
 export const getServerSideProps: GetServerSideProps<GetContactForm> = async (
   context
 ) => {
-  const contact = await getContactFormScreenProps(Number(context.params?.id));
+  const contact = await getContactUpdateScreenProps(Number(context.params?.id));
   return {
     props: {
       type: 'update',
