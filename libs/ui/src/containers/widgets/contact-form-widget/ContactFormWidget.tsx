@@ -2,10 +2,7 @@ import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
 import React from 'react';
 import { YStack } from 'tamagui';
 import { GetContactByID } from '../../../domains/';
-import {
-  mutateCreateContact,
-  mutateUpdateContact,
-} from './ContactFormWidget.fetcher';
+import { mutateUpdateContact } from './ContactFormWidget.fetcher';
 
 type ContactFormWidgetVariant =
   | { type: 'create' }
@@ -62,22 +59,16 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   ];
 
   const handleSubmit = async () => {
-    props.variant.type === 'create'
-      ? await mutateCreateContact({
-          payload: {
-            name,
-            phone,
-            profilePictureURL,
-          },
-        }).then(() => setIsSubmitting(true))
-      : mutateUpdateContact({
+    props.variant.type === 'update'
+      ? mutateUpdateContact({
           id: props.variant.id,
           payload: {
             name,
             phone,
             profilePictureURL,
           },
-        }).then(() => setIsSubmitting(true));
+        }).then(() => setIsSubmitting(true))
+      : null;
     setIsSubmitting(false);
   };
 

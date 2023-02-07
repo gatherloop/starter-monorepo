@@ -24,13 +24,3 @@ export async function mutateUpdateContact({
 }: mutateUpdateContactParams) {
   return contactApi.updateContactByID({ id, updateContactRequest: payload });
 }
-
-type mutateCreateContactParams = {
-  payload: CreateContactRequest;
-};
-
-export async function mutateCreateContact({
-  payload,
-}: mutateCreateContactParams) {
-  return contactApi.createContact({ createContactRequest: payload });
-}
