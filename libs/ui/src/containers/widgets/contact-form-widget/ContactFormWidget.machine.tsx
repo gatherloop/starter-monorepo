@@ -16,7 +16,7 @@ type State =
   | { type: 'creating'; formValues: FormValues }
   | { type: 'updating'; formValues: FormValues; id: number }
   | { type: 'submittingError'; message: string }
-  | { type: 'submittingSuccess' };
+  | { type: 'submittingSuccess'; formValues: FormValues };
 
 type Action =
   | { type: 'INIT_FORM_VALUES'; formValues: FormValues }
@@ -62,8 +62,9 @@ const reducer = (state: State, action: Action): State => {
       type: 'creating',
       formValues: state.formValues,
     }))
-    .with([{ type: 'creating' }, { type: 'SUBMIT_SUCCESS' }], () => ({
+    .with([{ type: 'creating' }, { type: 'SUBMIT_SUCCESS' }], ([state]) => ({
       type: 'submittingSuccess',
+      formValues: state.formValues,
     }))
     .with([{ type: 'creating' }, { type: 'SUBMIT_ERROR' }], ([_, action]) => ({
       type: 'submittingError',
@@ -74,8 +75,9 @@ const reducer = (state: State, action: Action): State => {
       formValues: state.formValues,
       id: action.id,
     }))
-    .with([{ type: 'updating' }, { type: 'SUBMIT_SUCCESS' }], () => ({
+    .with([{ type: 'updating' }, { type: 'SUBMIT_SUCCESS' }], ([state]) => ({
       type: 'submittingSuccess',
+      formValues: state.formValues,
     }))
     .with([{ type: 'updating' }, { type: 'SUBMIT_ERROR' }], ([_, action]) => ({
       type: 'submittingError',

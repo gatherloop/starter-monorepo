@@ -1,10 +1,5 @@
-import {
-  useCreateContactMutation,
-  useUpdateContactMutation,
-} from 'libs/ui/src/machines';
-import { ErrorView, Form, FormPops, Skeleton } from 'libs/ui/src/presentations';
-import React from 'react';
-import { AlertDialog, Text, YStack } from 'tamagui';
+import { ErrorView, Form, Skeleton } from 'libs/ui/src/presentations';
+import { AlertDialog, YStack } from 'tamagui';
 import { match } from 'ts-pattern';
 import { GetContactByID } from '../../../domains/';
 import { useContactWidgetMachine } from './ContactFormWidget.machine';
@@ -22,9 +17,6 @@ export interface ContactFormWidgetProps {
 }
 
 export const ContactFormWidget = (props: ContactFormWidgetProps) => {
-  const [name, setName] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [profilePictureURL, setProfilePictureUrl] = React.useState('');
   const [state, dispatch] = useContactWidgetMachine(
     {
       variant: props.variant,
@@ -32,126 +24,189 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     props.variant.type === 'update' ? props.variant.initialData : undefined
   );
 
-  React.useEffect(() => {
-    if (state.type === 'formReady') {
-      setName(state.formValues.name);
-      setPhone(state.formValues.phone);
-      setProfilePictureUrl(state.formValues.profilePictureURL);
-    }
-  }, [state.type]);
-
-  const fields: FormPops['fields'] = [
-    {
-      label: 'Name',
-      id: 'name',
-      placeholder: 'Input your name',
-      value: name,
-      onChange: setName,
-    },
-    {
-      label: 'Phone',
-      id: 'phone',
-      placeholder: '082xxxxxxx',
-      value: phone,
-      onChange: setPhone,
-    },
-    {
-      label: 'Profile Picture URL',
-      id: 'profilePicture',
-      placeholder: 'https://example.com/photo.jpg',
-      value: profilePictureURL,
-      onChange: setProfilePictureUrl,
-    },
-  ];
-
   const renderView = () => {
-    return match(props.variant)
-      .with({ type: 'create' }, () =>
-        match(state)
-          .with({ type: 'formReady' }, (t) => (
-            <Form
-              fields={fields}
-              onSubmit={() => dispatch({ type: 'CREATE' })}
-              isSubmitting={false}
-            />
-          ))
-          .with({ type: 'creating' }, () => (
-            <Form fields={fields} onSubmit={() => null} isSubmitting={true} />
-          ))
-          .with({ type: 'submittingSuccess' }, () => (
-            <>
-              <Form
-                fields={fields}
-                onSubmit={() => null}
-                isSubmitting={false}
-              />
-              <AlertDialog>
-                <AlertDialog.Description>
-                  Successfully create data
-                </AlertDialog.Description>
-              </AlertDialog>
-            </>
-          ))
-          .with({ type: 'error' }, () => (
-            <ErrorView
-              variant={{
-                tag: 'fetching-error',
-                onRetryButtonPress: () => null,
-              }}
-            />
-          ))
-          .otherwise(() => null)
-      )
-      .with({ type: 'update' }, () =>
-        match(state)
-          .with({ type: 'idle' }, { type: 'loading' }, () => (
-            <Skeleton isLoading>
-              <Form
-                fields={fields}
-                onSubmit={() => null}
-                isSubmitting={false}
-              />
-            </Skeleton>
-          ))
-          .with({ type: 'formReady' }, () => (
-            <Form
-              fields={fields}
-              onSubmit={() =>
+    return match(state)
+      .with({ type: 'idle' }, { type: 'loading' }, () => (
+        <Skeleton isLoading>
+          <Form
+            fields={[
+              {
+                label: 'Name',
+                id: 'name',
+                placeholder: 'Input your name',
+                value: '',
+                onChange: () => null,
+              },
+              {
+                label: 'Phone',
+                id: 'phone',
+                placeholder: '082xxxxxxx',
+                value: '',
+                onChange: () => null,
+              },
+              {
+                label: 'Profile Picture URL',
+                id: 'profilePicture',
+                placeholder: 'https://example.com/photo.jpg',
+                value: '',
+                onChange: () => null,
+              },
+            ]}
+            onSubmit={() => null}
+            isSubmitting={false}
+          />
+        </Skeleton>
+      ))
+      .with({ type: 'formReady' }, (state) => (
+        <Form
+          fields={[
+            {
+              label: 'Name',
+              id: 'name',
+              placeholder: 'Input your name',
+              value: state.formValues.name,
+              onChange: (value) =>
                 dispatch({
-                  type: 'UPDATE',
-                  id: props.variant.type === 'update' ? props.variant.id : 0,
-                })
-              }
-              isSubmitting={false}
-            />
-          ))
-          .with({ type: 'updating' }, () => (
-            <Form fields={fields} onSubmit={() => null} isSubmitting={true} />
-          ))
-          .with({ type: 'submittingSuccess' }, () => (
-            <>
-              <Form
-                fields={fields}
-                onSubmit={() => null}
-                isSubmitting={false}
-              />
-              <AlertDialog>
-                <AlertDialog.Description>
-                  Successfully update data
-                </AlertDialog.Description>
-              </AlertDialog>
-            </>
-          ))
-          .with({ type: 'error' }, () => (
-            <ErrorView
-              variant={{
-                tag: 'fetching-error',
-                onRetryButtonPress: () => null,
-              }}
-            />
-          ))
-          .otherwise(() => null)
-      )
+                  type: 'CHANGE_PAYLOAD',
+                  formValues: {
+                    ...state.formValues,
+                    name: value,
+                  },
+                }),
+            },
+            {
+              label: 'Phone',
+              id: 'phone',
+              placeholder: '082xxxxxxx',
+              value: state.formValues.phone,
+              onChange: (value) =>
+                dispatch({
+                  type: 'CHANGE_PAYLOAD',
+                  formValues: {
+                    ...state.formValues,
+                    phone: value,
+                  },
+                }),
+            },
+            {
+              label: 'Profile Picture URL',
+              id: 'profilePicture',
+              placeholder: 'https://example.com/photo.jpg',
+              value: state.formValues.profilePictureURL,
+              onChange: (value) =>
+                dispatch({
+                  type: 'CHANGE_PAYLOAD',
+                  formValues: {
+                    ...state.formValues,
+                    profilePictureURL: value,
+                  },
+                }),
+            },
+          ]}
+          onSubmit={() =>
+            props.variant.type === 'create'
+              ? dispatch({ type: 'CREATE' })
+              : dispatch({ type: 'UPDATE', id: props.variant.id })
+          }
+          isSubmitting={false}
+        />
+      ))
+      .with({ type: 'creating' }, { type: 'updating' }, (state) => (
+        <Form
+          fields={[
+            {
+              label: 'Name',
+              id: 'name',
+              placeholder: 'Input your name',
+              value: state.formValues.name,
+              onChange: () => null,
+            },
+            {
+              label: 'Phone',
+              id: 'phone',
+              placeholder: '082xxxxxxx',
+              value: state.formValues.phone,
+              onChange: () => null,
+            },
+            {
+              label: 'Profile Picture URL',
+              id: 'profilePicture',
+              placeholder: 'https://example.com/photo.jpg',
+              value: state.formValues.profilePictureURL,
+              onChange: () => null,
+            },
+          ]}
+          onSubmit={() => null}
+          isSubmitting={true}
+        />
+      ))
+      .with({ type: 'submittingSuccess' }, (state) => (
+        <>
+          <Form
+            fields={[
+              {
+                label: 'Name',
+                id: 'name',
+                placeholder: 'Input your name',
+                value: state.formValues.name,
+                onChange: (value) =>
+                  dispatch({
+                    type: 'CHANGE_PAYLOAD',
+                    formValues: {
+                      ...state.formValues,
+                      name: value,
+                    },
+                  }),
+              },
+              {
+                label: 'Phone',
+                id: 'phone',
+                placeholder: '082xxxxxxx',
+                value: state.formValues.phone,
+                onChange: (value) =>
+                  dispatch({
+                    type: 'CHANGE_PAYLOAD',
+                    formValues: {
+                      ...state.formValues,
+                      phone: value,
+                    },
+                  }),
+              },
+              {
+                label: 'Profile Picture URL',
+                id: 'profilePicture',
+                placeholder: 'https://example.com/photo.jpg',
+                value: state.formValues.profilePictureURL,
+                onChange: (value) =>
+                  dispatch({
+                    type: 'CHANGE_PAYLOAD',
+                    formValues: {
+                      ...state.formValues,
+                      profilePictureURL: value,
+                    },
+                  }),
+              },
+            ]}
+            onSubmit={() => null}
+            isSubmitting={false}
+          />
+          <AlertDialog>
+            <AlertDialog.Description>
+              {props.variant.type === 'create'
+                ? 'Successfully create data'
+                : 'Successfully update data'}
+            </AlertDialog.Description>
+          </AlertDialog>
+        </>
+      ))
+      .with({ type: 'error' }, () => (
+        <ErrorView
+          variant={{
+            tag: 'fetching-error',
+            onRetryButtonPress: () => null,
+          }}
+        />
+      ))
       .otherwise(() => null);
   };
 
