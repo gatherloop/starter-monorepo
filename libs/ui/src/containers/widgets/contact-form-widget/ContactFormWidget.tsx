@@ -1,7 +1,7 @@
 import { ErrorView, Form, Skeleton } from 'libs/ui/src/presentations';
 import { AlertDialog, YStack } from 'tamagui';
 import { match } from 'ts-pattern';
-import { GetContactByID } from '../../../domains/';
+import { Contact, GetContactByID } from '../../../domains/';
 import { useContactWidgetMachine } from './ContactFormWidget.machine';
 
 type ContactFormWidgetVariant =
@@ -23,6 +23,20 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     },
     props.variant.type === 'update' ? props.variant.initialData : undefined
   );
+
+  function handleChange(
+    fieldName: string,
+    value: string,
+    state: Omit<Contact, 'id'>
+  ) {
+    dispatch({
+      type: 'CHANGE_PAYLOAD',
+      formValues: {
+        ...state,
+        [fieldName]: value,
+      },
+    });
+  }
 
   const renderView = () => {
     return match(state)
@@ -66,13 +80,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
               placeholder: 'Input your name',
               value: state.formValues.name,
               onChange: (value) =>
-                dispatch({
-                  type: 'CHANGE_PAYLOAD',
-                  formValues: {
-                    ...state.formValues,
-                    name: value,
-                  },
-                }),
+                handleChange('name', value, state.formValues),
             },
             {
               label: 'Phone',
@@ -80,13 +88,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
               placeholder: '082xxxxxxx',
               value: state.formValues.phone,
               onChange: (value) =>
-                dispatch({
-                  type: 'CHANGE_PAYLOAD',
-                  formValues: {
-                    ...state.formValues,
-                    phone: value,
-                  },
-                }),
+                handleChange('phone', value, state.formValues),
             },
             {
               label: 'Profile Picture URL',
@@ -94,13 +96,7 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
               placeholder: 'https://example.com/photo.jpg',
               value: state.formValues.profilePictureURL,
               onChange: (value) =>
-                dispatch({
-                  type: 'CHANGE_PAYLOAD',
-                  formValues: {
-                    ...state.formValues,
-                    profilePictureURL: value,
-                  },
-                }),
+                handleChange('profilePictureURL', value, state.formValues),
             },
           ]}
           onSubmit={() =>
@@ -149,42 +145,21 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
                 id: 'name',
                 placeholder: 'Input your name',
                 value: state.formValues.name,
-                onChange: (value) =>
-                  dispatch({
-                    type: 'CHANGE_PAYLOAD',
-                    formValues: {
-                      ...state.formValues,
-                      name: value,
-                    },
-                  }),
+                onChange: () => null,
               },
               {
                 label: 'Phone',
                 id: 'phone',
                 placeholder: '082xxxxxxx',
                 value: state.formValues.phone,
-                onChange: (value) =>
-                  dispatch({
-                    type: 'CHANGE_PAYLOAD',
-                    formValues: {
-                      ...state.formValues,
-                      phone: value,
-                    },
-                  }),
+                onChange: () => null,
               },
               {
                 label: 'Profile Picture URL',
                 id: 'profilePicture',
                 placeholder: 'https://example.com/photo.jpg',
                 value: state.formValues.profilePictureURL,
-                onChange: (value) =>
-                  dispatch({
-                    type: 'CHANGE_PAYLOAD',
-                    formValues: {
-                      ...state.formValues,
-                      profilePictureURL: value,
-                    },
-                  }),
+                onChange: () => null,
               },
             ]}
             onSubmit={() => null}
