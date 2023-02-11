@@ -1,10 +1,10 @@
 {
   "contacts": [
     {
-      "id": 1,
-      "name": "M. Nindra Zaka",
+      "name": "Raka Ardinata",
       "phone": "0853728372834",
-      "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+      "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+      "id": 1
     },
     {
       "id": 2,
@@ -29,6 +29,18 @@
       "name": "Samsul",
       "phone": "0857253728261",
       "profilePictureURL": "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    },
+    {
+      "name": "Vicky",
+      "phone": "085726172839",
+      "profilePictureURL": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
+      "id": 6
+    },
+    {
+      "name": "Bagus",
+      "phone": "085736273829",
+      "profilePictureURL": "https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000",
+      "id": 7
     }
   ]
 }

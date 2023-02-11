@@ -94,6 +94,8 @@ type Config = {
         initialData?: GetContactByID;
         id: number;
       };
+  onSubmitSuccess?: () => void;
+  onSubmitError?: (message: string) => void;
 };
 
 const onChange = (
@@ -137,6 +139,12 @@ const onChange = (
           dispatch({ type: 'SUBMIT_ERROR', message: err.message })
         )
     )
+    .with({ type: 'submittingSuccess' }, () => {
+      if (config.onSubmitSuccess) config.onSubmitSuccess();
+    })
+    .with({ type: 'submittingError' }, (state) => {
+      if (config.onSubmitError) config.onSubmitError(state.message);
+    })
     .otherwise(() => null);
 };
 

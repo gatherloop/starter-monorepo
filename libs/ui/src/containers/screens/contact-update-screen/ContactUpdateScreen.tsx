@@ -1,5 +1,5 @@
 import { Container, PageHeading } from 'libs/ui/src/presentations';
-import { useRouter } from 'next/router';
+import { useRouter } from 'solito/router';
 import { YStack } from 'tamagui';
 import { ContactFormWidget } from '../../widgets';
 import { GetContactByID } from '../../../domains/';
@@ -26,6 +26,7 @@ export const ContactUpdateScreen = (props: ContactUpdateScreenProps) => {
             id: props.id,
             initialData: props.initialData,
           }}
+          onSubmitSuccess={() => router.push('/')}
         />
       </Container>
     </YStack>
