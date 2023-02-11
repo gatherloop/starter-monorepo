@@ -14,12 +14,16 @@ type ContactFormWidgetVariant =
 
 export interface ContactFormWidgetProps {
   variant: ContactFormWidgetVariant;
+  onSubmitSuccess?: () => void;
+  onSubmitError?: (message: string) => void;
 }
 
 export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   const [state, dispatch] = useContactWidgetMachine(
     {
       variant: props.variant,
+      onSubmitSuccess: props.onSubmitSuccess,
+      onSubmitError: props.onSubmitError,
     },
     props.variant.type === 'update' ? props.variant.initialData : undefined
   );
