@@ -1,12 +1,12 @@
 package main
 
 import (
-	"course-explorer-monorepo/apps/server/config"
-	"course-explorer-monorepo/apps/server/config/database"
 	"course-explorer-monorepo/apps/server/core/module"
 	"course-explorer-monorepo/apps/server/core/repository"
 	"course-explorer-monorepo/apps/server/handler"
 	"course-explorer-monorepo/libs/api/middlewares"
+	"course-explorer-monorepo/libs/api/utils/config"
+	"course-explorer-monorepo/libs/api/utils/database"
 	"fmt"
 	"log"
 	"net/http"
