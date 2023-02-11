@@ -20,6 +20,7 @@ jobs:
         run: |
           npm install
           npx nx image-push user-facing
+          npx nx gen-contract api
           npx nx image-push server
       - name: Deploy Using SSH
         uses: appleboy/ssh-action@master
