@@ -29,13 +29,15 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const onChange = (state: State, dispatch: (action: Action) => void) => {
-  match(state).with({ type: 'idle' }, () => dispatch({ type: 'FETCH' }));
-  match(state).with({ type: 'loading' }, () =>
-    contactApi
-      .getContacts()
-      .then((data) => dispatch({ type: 'FETCH_SUCCESS', data }))
-      .catch((err) => dispatch({ type: 'FETCH_ERROR', message: err.message }))
-  );
+  match(state)
+    .with({ type: 'idle' }, () => dispatch({ type: 'FETCH' }))
+    .with({ type: 'loading' }, () =>
+      contactApi
+        .getContacts()
+        .then((data) => dispatch({ type: 'FETCH_SUCCESS', data }))
+        .catch((err) => dispatch({ type: 'FETCH_ERROR', message: err.message }))
+    )
+    .otherwise(() => null);
 };
 
 const initialState = (initialData?: GetContactsList): State => {
