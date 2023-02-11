@@ -28,7 +28,6 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
   );
 
   function handleChange(fieldName: keyof FormValues, value: string) {
-    console.log(fieldName, value);
     dispatch({
       type: 'CHANGE_FORM_VALUE',
       fieldName,
