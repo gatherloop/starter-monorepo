@@ -6,6 +6,7 @@ import (
 	"course-explorer-monorepo/apps/server/core/module"
 	"course-explorer-monorepo/apps/server/core/repository"
 	"course-explorer-monorepo/apps/server/handler"
+	"course-explorer-monorepo/libs/api/middlewares"
 	"fmt"
 	"log"
 	"net/http"
@@ -34,5 +35,7 @@ func main() {
 	mux.HandleFunc("/contacts/{id}", contactHandler.GetContactByID).Methods("GET")
 	mux.HandleFunc("/contacts/{id}", contactHandler.UpdateContactByID).Methods("PUT")
 
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("SERVER_PORT")), mux))
+	muxWithMiddlewares := middlewares.NewCorsMiddleware(mux.ServeHTTP)
+
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("SERVER_PORT")), muxWithMiddlewares))
 }
