@@ -1,8 +1,11 @@
-import { ErrorView, Form, Skeleton } from 'libs/ui/src/presentations';
+import { ErrorView, Form, FormProps, Skeleton } from '../../../presentations';
 import { AlertDialog, YStack } from 'tamagui';
 import { match } from 'ts-pattern';
-import { Contact, GetContactByID } from '../../../domains/';
-import { useContactWidgetMachine } from './ContactFormWidget.machine';
+import { GetContactByID } from '../../../domains/';
+import {
+  FormValues,
+  useContactWidgetMachine,
+} from './ContactFormWidget.machine';
 
 type ContactFormWidgetVariant =
   | { type: 'create' }
@@ -28,147 +31,91 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
     props.variant.type === 'update' ? props.variant.initialData : undefined
   );
 
-  function handleChange(
-    fieldName: string,
-    value: string,
-    state: Omit<Contact, 'id'>
-  ) {
+  function handleChange(fieldName: keyof FormValues, value: string) {
     dispatch({
-      type: 'CHANGE_PAYLOAD',
-      formValues: {
-        ...state,
-        [fieldName]: value,
-      },
+      type: 'CHANGE_FORM_VALUE',
+      fieldName,
+      value,
     });
   }
+
+  function getFieldValue(fieldName: keyof FormValues) {
+    return match(state)
+      .with(
+        { type: 'idle' },
+        { type: 'loading' },
+        { type: 'error' },
+        { type: 'submittingError' },
+        () => ''
+      )
+      .with(
+        { type: 'formReady' },
+        { type: 'creating' },
+        { type: 'updating' },
+        { type: 'submittingSuccess' },
+        (state) => state.formValues[fieldName]
+      )
+      .exhaustive();
+  }
+
+  const fields: FormProps['fields'] = [
+    {
+      label: 'Name',
+      id: 'name',
+      placeholder: 'Input your name',
+      value: getFieldValue('name'),
+      onChange: (value) => handleChange('name', value),
+    },
+    {
+      label: 'Phone',
+      id: 'phone',
+      placeholder: '082xxxxxxx',
+      value: getFieldValue('phone'),
+      onChange: (value) => handleChange('phone', value),
+    },
+    {
+      label: 'Profile Picture URL',
+      id: 'profilePicture',
+      placeholder: 'https://example.com/photo.jpg',
+      value: getFieldValue('profilePictureURL'),
+      onChange: (value) => handleChange('profilePictureURL', value),
+    },
+  ];
 
   const renderView = () => {
     return match(state)
       .with({ type: 'idle' }, { type: 'loading' }, () => (
         <Skeleton isLoading>
-          <Form
-            fields={[
-              {
-                label: 'Name',
-                id: 'name',
-                placeholder: 'Input your name',
-                value: '',
-                onChange: () => null,
-              },
-              {
-                label: 'Phone',
-                id: 'phone',
-                placeholder: '082xxxxxxx',
-                value: '',
-                onChange: () => null,
-              },
-              {
-                label: 'Profile Picture URL',
-                id: 'profilePicture',
-                placeholder: 'https://example.com/photo.jpg',
-                value: '',
-                onChange: () => null,
-              },
-            ]}
-            onSubmit={() => null}
-            isSubmitting={false}
-          />
+          <Form fields={fields} />
         </Skeleton>
       ))
-      .with({ type: 'formReady' }, (state) => (
+      .with({ type: 'error' }, () => (
+        <ErrorView
+          variant={{
+            tag: 'fetching-error',
+            onRetryButtonPress: () => {
+              if (props.variant.type === 'update')
+                dispatch({ type: 'FETCH', id: props.variant.id });
+            },
+          }}
+        />
+      ))
+      .with({ type: 'formReady' }, () => (
         <Form
-          fields={[
-            {
-              label: 'Name',
-              id: 'name',
-              placeholder: 'Input your name',
-              value: state.formValues.name,
-              onChange: (value) =>
-                handleChange('name', value, state.formValues),
-            },
-            {
-              label: 'Phone',
-              id: 'phone',
-              placeholder: '082xxxxxxx',
-              value: state.formValues.phone,
-              onChange: (value) =>
-                handleChange('phone', value, state.formValues),
-            },
-            {
-              label: 'Profile Picture URL',
-              id: 'profilePicture',
-              placeholder: 'https://example.com/photo.jpg',
-              value: state.formValues.profilePictureURL,
-              onChange: (value) =>
-                handleChange('profilePictureURL', value, state.formValues),
-            },
-          ]}
+          fields={fields}
           onSubmit={() =>
             props.variant.type === 'create'
               ? dispatch({ type: 'CREATE' })
               : dispatch({ type: 'UPDATE', id: props.variant.id })
           }
-          isSubmitting={false}
         />
       ))
-      .with({ type: 'creating' }, { type: 'updating' }, (state) => (
-        <Form
-          fields={[
-            {
-              label: 'Name',
-              id: 'name',
-              placeholder: 'Input your name',
-              value: state.formValues.name,
-              onChange: () => null,
-            },
-            {
-              label: 'Phone',
-              id: 'phone',
-              placeholder: '082xxxxxxx',
-              value: state.formValues.phone,
-              onChange: () => null,
-            },
-            {
-              label: 'Profile Picture URL',
-              id: 'profilePicture',
-              placeholder: 'https://example.com/photo.jpg',
-              value: state.formValues.profilePictureURL,
-              onChange: () => null,
-            },
-          ]}
-          onSubmit={() => null}
-          isSubmitting={true}
-        />
+      .with({ type: 'creating' }, { type: 'updating' }, () => (
+        <Form fields={fields} isSubmitting />
       ))
-      .with({ type: 'submittingSuccess' }, (state) => (
+      .with({ type: 'submittingSuccess' }, () => (
         <>
-          <Form
-            fields={[
-              {
-                label: 'Name',
-                id: 'name',
-                placeholder: 'Input your name',
-                value: state.formValues.name,
-                onChange: () => null,
-              },
-              {
-                label: 'Phone',
-                id: 'phone',
-                placeholder: '082xxxxxxx',
-                value: state.formValues.phone,
-                onChange: () => null,
-              },
-              {
-                label: 'Profile Picture URL',
-                id: 'profilePicture',
-                placeholder: 'https://example.com/photo.jpg',
-                value: state.formValues.profilePictureURL,
-                onChange: () => null,
-              },
-            ]}
-            onSubmit={() => null}
-            isSubmitting={false}
-          />
+          <Form fields={fields} />
           <AlertDialog>
             <AlertDialog.Description>
               {props.variant.type === 'create'
@@ -178,15 +125,19 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
           </AlertDialog>
         </>
       ))
-      .with({ type: 'error' }, () => (
-        <ErrorView
-          variant={{
-            tag: 'fetching-error',
-            onRetryButtonPress: () => null,
-          }}
-        />
+      .with({ type: 'submittingError' }, () => (
+        <>
+          <Form fields={fields} />
+          <AlertDialog>
+            <AlertDialog.Description>
+              {props.variant.type === 'create'
+                ? 'Failed to create data'
+                : 'Failed to update data'}
+            </AlertDialog.Description>
+          </AlertDialog>
+        </>
       ))
-      .otherwise(() => null);
+      .exhaustive();
   };
 
   return (

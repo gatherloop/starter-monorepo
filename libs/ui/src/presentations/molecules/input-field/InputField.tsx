@@ -22,7 +22,7 @@ export const InputField = (props: InputFieldProps) => {
           id={props.id}
           value={props.value}
           placeholder={props.placeholder}
-          onChange={(e) => props.onChange(e.nativeEvent.text)}
+          onChangeText={props.onChange}
         />
       </SkeletonItem>
 

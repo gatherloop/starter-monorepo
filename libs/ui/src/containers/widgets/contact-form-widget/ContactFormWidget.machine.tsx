@@ -2,7 +2,7 @@ import React from 'react';
 import { match } from 'ts-pattern';
 import { contactApi, GetContactByID } from '../../../domains';
 
-type FormValues = {
+export type FormValues = {
   name: string;
   phone: string;
   profilePictureURL: string;
@@ -23,7 +23,7 @@ type Action =
   | { type: 'FETCH'; id: number }
   | { type: 'FETCH_SUCCESS'; data: GetContactByID }
   | { type: 'FETCH_ERROR'; message: string }
-  | { type: 'CHANGE_PAYLOAD'; formValues: FormValues }
+  | { type: 'CHANGE_FORM_VALUE'; fieldName: keyof FormValues; value: string }
   | { type: 'CREATE' }
   | { type: 'UPDATE'; id: number }
   | { type: 'SUBMIT_SUCCESS' }
@@ -51,11 +51,18 @@ const reducer = (state: State, action: Action): State => {
       type: 'error',
       message: action.message,
     }))
+    .with([{ type: 'error' }, { type: 'FETCH' }], ([_, action]) => ({
+      type: 'loading',
+      id: action.id,
+    }))
     .with(
-      [{ type: 'formReady' }, { type: 'CHANGE_PAYLOAD' }],
-      ([_, action]) => ({
+      [{ type: 'formReady' }, { type: 'CHANGE_FORM_VALUE' }],
+      ([state, action]) => ({
         type: 'formReady',
-        formValues: action.formValues,
+        formValues: {
+          ...state.formValues,
+          [action.fieldName]: action.value,
+        },
       })
     )
     .with([{ type: 'formReady' }, { type: 'CREATE' }], ([state]) => ({

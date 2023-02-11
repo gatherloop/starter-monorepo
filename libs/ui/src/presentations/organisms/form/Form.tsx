@@ -2,13 +2,13 @@ import { Button, Spinner, YStack } from 'tamagui';
 import { Container, InputField, InputFieldProps } from '../../molecules';
 import { SkeletonItem } from '../../molecules/skeleton';
 
-export interface FormPops {
+export interface FormProps {
   fields: InputFieldProps[];
-  onSubmit: () => void;
-  isSubmitting: boolean;
+  onSubmit?: () => void;
+  isSubmitting?: boolean;
 }
 
-export const Form = (props: FormPops) => {
+export const Form = (props: FormProps) => {
   return (
     <Container>
       <YStack space="$2" padding="$6">
