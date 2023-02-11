@@ -30,10 +30,10 @@ func main() {
 	contactHandler := handler.NewContactHandler(contactUsecase)
 
 	mux := mux.NewRouter()
-	mux.HandleFunc("/contacts", contactHandler.CreateContact).Methods("POST", "OPTIONS")
-	mux.HandleFunc("/contacts", contactHandler.GetContactList).Methods("GET", "OPTIONS")
-	mux.HandleFunc("/contacts/{id}", contactHandler.GetContactByID).Methods("GET", "OPTIONS")
-	mux.HandleFunc("/contacts/{id}", contactHandler.UpdateContactByID).Methods("PUT", "OPTIONS")
+	mux.HandleFunc("/contacts", contactHandler.CreateContact).Methods("POST")
+	mux.HandleFunc("/contacts", contactHandler.GetContactList).Methods("GET")
+	mux.HandleFunc("/contacts/{id}", contactHandler.GetContactByID).Methods("GET")
+	mux.HandleFunc("/contacts/{id}", contactHandler.UpdateContactByID).Methods("PUT")
 
 	muxWithMiddlewares := middlewares.NewCorsMiddleware(mux.ServeHTTP)
 
