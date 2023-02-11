@@ -24,7 +24,7 @@ const nextConfig = {
     svgr: false,
   },
   publicRuntimeConfig: {
-    apiURL: process.env.API_URL ?? 'http://localhost:3000',
+    apiURL: process.env.API_URL ?? 'https://gw-starter.gatherloop.co',
   },
   typescript: {
     // !! WARN !!

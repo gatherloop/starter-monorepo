@@ -7,7 +7,7 @@ import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 setConfig({
   publicRuntimeConfig: {
-    apiURL: 'http://localhost:3000',
+    apiURL: 'https://gw-starter.gatherloop.co',
   },
 });
 
