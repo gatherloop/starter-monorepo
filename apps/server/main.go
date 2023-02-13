@@ -16,6 +16,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
+func optionsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("success"))
+}
+
 func main() {
 	godotenv.Load()
 
@@ -30,10 +34,11 @@ func main() {
 	contactHandler := handler.NewContactHandler(contactUsecase)
 
 	mux := mux.NewRouter()
-	mux.HandleFunc("/contacts", contactHandler.CreateContact).Methods("POST", "OPTIONS")
-	mux.HandleFunc("/contacts", contactHandler.GetContactList).Methods("GET", "OPTIONS")
-	mux.HandleFunc("/contacts/{id}", contactHandler.GetContactByID).Methods("GET", "OPTIONS")
-	mux.HandleFunc("/contacts/{id}", contactHandler.UpdateContactByID).Methods("PUT", "OPTIONS")
+	mux.HandleFunc("/contacts", contactHandler.CreateContact).Methods("POST")
+	mux.HandleFunc("/contacts", contactHandler.GetContactList).Methods("GET")
+	mux.HandleFunc("/contacts/{id}", contactHandler.GetContactByID).Methods("GET")
+	mux.HandleFunc("/contacts/{id}", contactHandler.UpdateContactByID).Methods("PUT")
+	mux.PathPrefix("/").HandlerFunc(optionsHandler).Methods("OPTIONS")
 
 	muxWithMiddlewares := middlewares.NewCorsMiddleware(mux.ServeHTTP)
 
