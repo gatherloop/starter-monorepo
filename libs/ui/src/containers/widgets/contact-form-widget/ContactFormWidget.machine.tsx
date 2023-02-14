@@ -15,7 +15,7 @@ type State =
   | { type: 'formReady'; formValues: FormValues }
   | { type: 'creating'; formValues: FormValues }
   | { type: 'updating'; formValues: FormValues; id: number }
-  | { type: 'submittingError'; message: string }
+  | { type: 'submittingError'; formValues: FormValues; message: string }
   | { type: 'submittingSuccess'; formValues: FormValues };
 
 type Action =
@@ -27,7 +27,8 @@ type Action =
   | { type: 'CREATE' }
   | { type: 'UPDATE'; id: number }
   | { type: 'SUBMIT_SUCCESS' }
-  | { type: 'SUBMIT_ERROR'; message: string };
+  | { type: 'SUBMIT_ERROR'; message: string }
+  | { type: 'REINPUT' };
 
 const reducer = (state: State, action: Action): State => {
   return match<[State, Action], State>([state, action])
@@ -73,10 +74,14 @@ const reducer = (state: State, action: Action): State => {
       type: 'submittingSuccess',
       formValues: state.formValues,
     }))
-    .with([{ type: 'creating' }, { type: 'SUBMIT_ERROR' }], ([_, action]) => ({
-      type: 'submittingError',
-      message: action.message,
-    }))
+    .with(
+      [{ type: 'creating' }, { type: 'SUBMIT_ERROR' }],
+      ([state, action]) => ({
+        type: 'submittingError',
+        message: action.message,
+        formValues: state.formValues,
+      })
+    )
     .with([{ type: 'formReady' }, { type: 'UPDATE' }], ([state, action]) => ({
       type: 'updating',
       formValues: state.formValues,
@@ -86,9 +91,17 @@ const reducer = (state: State, action: Action): State => {
       type: 'submittingSuccess',
       formValues: state.formValues,
     }))
-    .with([{ type: 'updating' }, { type: 'SUBMIT_ERROR' }], ([_, action]) => ({
-      type: 'submittingError',
-      message: action.message,
+    .with(
+      [{ type: 'updating' }, { type: 'SUBMIT_ERROR' }],
+      ([state, action]) => ({
+        type: 'submittingError',
+        message: action.message,
+        formValues: state.formValues,
+      })
+    )
+    .with([{ type: 'submittingError' }, { type: 'REINPUT' }], ([state]) => ({
+      type: 'formReady',
+      formValues: state.formValues,
     }))
     .otherwise(() => state);
 };

@@ -1,5 +1,5 @@
 import { ErrorView, Form, FormProps, Skeleton } from '../../../presentations';
-import { AlertDialog, YStack } from 'tamagui';
+import { YStack, Dialog } from 'tamagui';
 import { match } from 'ts-pattern';
 import { GetContactByID } from '../../../domains/';
 import {
@@ -41,18 +41,13 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
 
   function getFieldValue(fieldName: keyof FormValues) {
     return match(state)
-      .with(
-        { type: 'idle' },
-        { type: 'loading' },
-        { type: 'error' },
-        { type: 'submittingError' },
-        () => ''
-      )
+      .with({ type: 'idle' }, { type: 'loading' }, { type: 'error' }, () => '')
       .with(
         { type: 'formReady' },
         { type: 'creating' },
         { type: 'updating' },
         { type: 'submittingSuccess' },
+        { type: 'submittingError' },
         (state) => state.formValues[fieldName]
       )
       .exhaustive();
@@ -116,25 +111,38 @@ export const ContactFormWidget = (props: ContactFormWidgetProps) => {
       .with({ type: 'submittingSuccess' }, () => (
         <>
           <Form fields={fields} />
-          <AlertDialog>
-            <AlertDialog.Description>
-              {props.variant.type === 'create'
-                ? 'Successfully create data'
-                : 'Successfully update data'}
-            </AlertDialog.Description>
-          </AlertDialog>
+          <Dialog open>
+            <Dialog.Portal>
+              <Dialog.Overlay opacity={0.5} />
+              <Dialog.Content>
+                <Dialog.Description>
+                  {props.variant.type === 'create'
+                    ? 'Successfully create data'
+                    : 'Successfully update data'}
+                </Dialog.Description>
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog>
         </>
       ))
       .with({ type: 'submittingError' }, () => (
         <>
           <Form fields={fields} />
-          <AlertDialog>
-            <AlertDialog.Description>
-              {props.variant.type === 'create'
-                ? 'Failed to create data'
-                : 'Failed to update data'}
-            </AlertDialog.Description>
-          </AlertDialog>
+          <Dialog open>
+            <Dialog.Portal>
+              <Dialog.Overlay
+                opacity={0.5}
+                onPress={() => dispatch({ type: 'REINPUT' })}
+              />
+              <Dialog.Content>
+                <Dialog.Description>
+                  {props.variant.type === 'create'
+                    ? 'Failed to create data'
+                    : 'Failed to update data'}
+                </Dialog.Description>
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog>
         </>
       ))
       .exhaustive();
