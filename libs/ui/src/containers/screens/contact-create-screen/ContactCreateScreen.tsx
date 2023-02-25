@@ -1,5 +1,5 @@
 import { Container, PageHeading } from 'libs/ui/src/presentations';
-import { useRouter } from 'solito/router';
+import { useRouter } from 'next/router';
 import { YStack } from 'tamagui';
 import { ContactFormWidget } from '../../widgets';
 
