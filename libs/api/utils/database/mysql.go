@@ -1,8 +1,9 @@
 package database
 
 import (
-	"course-explorer-monorepo/apps/server/config"
+	"course-explorer-monorepo/libs/api/utils/config"
 	"fmt"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

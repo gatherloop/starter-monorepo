@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"course-explorer-monorepo/apps/server/utils"
+	"course-explorer-monorepo/libs/api/utils"
 	"net/http"
 )
 
