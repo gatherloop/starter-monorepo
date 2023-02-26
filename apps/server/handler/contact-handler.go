@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"starter-monorepo/apps/server/core/module"
-	"starter-monorepo/apps/server/utils/response"
 	"starter-monorepo/libs/api/domain"
+	"starter-monorepo/libs/api/utils/response"
 	"strconv"
 
 	"github.com/gorilla/mux"

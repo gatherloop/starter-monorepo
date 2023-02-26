@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"starter-monorepo/apps/server/config"
+	"starter-monorepo/libs/api/utils/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

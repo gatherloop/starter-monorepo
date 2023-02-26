@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 	"errors"
-	"starter-monorepo/apps/server/utils"
 	"starter-monorepo/libs/api/domain"
+	"starter-monorepo/libs/api/utils"
 
 	"gorm.io/gorm"
 )
