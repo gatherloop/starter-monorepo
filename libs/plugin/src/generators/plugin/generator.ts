@@ -63,7 +63,7 @@ export default async function (tree: Tree, options: PluginGeneratorSchema) {
     sourceRoot: `${normalizedOptions.projectRoot}/src`,
     targets: {
       build: {
-        executor: '@course-explorer-monorepo/plugin:build',
+        executor: '@starter-monorepo/plugin:build',
       },
     },
     tags: normalizedOptions.parsedTags,

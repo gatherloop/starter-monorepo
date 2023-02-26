@@ -1,13 +1,14 @@
 package handler
 
 import (
-	"course-explorer-monorepo/apps/server/core/module"
-	"course-explorer-monorepo/apps/server/utils/response"
-	"course-explorer-monorepo/libs/api/domain"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"net/http"
+	"starter-monorepo/apps/server/core/module"
+	"starter-monorepo/apps/server/utils/response"
+	"starter-monorepo/libs/api/domain"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 type contactHandler struct {

@@ -2,9 +2,10 @@ package repository
 
 import (
 	"context"
-	"course-explorer-monorepo/apps/server/utils"
-	"course-explorer-monorepo/libs/api/domain"
 	"errors"
+	"starter-monorepo/apps/server/utils"
+	"starter-monorepo/libs/api/domain"
+
 	"gorm.io/gorm"
 )
 

@@ -1,3 +1,3 @@
-import { ContactCreateScreen } from '@course-explorer-monorepo/ui';
+import { ContactCreateScreen } from '@starter-monorepo/ui';
 
 export default ContactCreateScreen;

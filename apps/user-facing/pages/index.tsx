@@ -2,7 +2,7 @@ import {
   ContactListScreen,
   ContactListScreenProps,
   getContactListScreenProps,
-} from '@course-explorer-monorepo/ui';
+} from '@starter-monorepo/ui';
 import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps<

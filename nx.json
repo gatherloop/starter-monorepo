@@ -2,7 +2,7 @@
   "implicitDependencies": {
     "go.mod": "*"
   },
-  "npmScope": "course-explorer-monorepo",
+  "npmScope": "starter-monorepo",
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"],

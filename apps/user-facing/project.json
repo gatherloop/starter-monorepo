@@ -109,7 +109,7 @@
       ]
     },
     "sync-assets": {
-      "executor": "@course-explorer-monorepo/plugin:sync-files",
+      "executor": "@starter-monorepo/plugin:sync-files",
       "options": {
         "sourceFolder": "libs/ui/src/assets",
         "targetFolder": "apps/user-facing/public/assets"
