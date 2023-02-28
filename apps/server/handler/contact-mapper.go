@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"course-explorer-monorepo/libs/api/utils"
 	"net/http"
+	"starter-monorepo/libs/api/utils"
 )
 
 func mapUpdateContactByIDStatusCodeError(err error) int {

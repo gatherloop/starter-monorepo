@@ -2,8 +2,8 @@ package module
 
 import (
 	"context"
-	"course-explorer-monorepo/apps/server/core/repository"
-	"course-explorer-monorepo/libs/api/domain"
+	"starter-monorepo/apps/server/core/repository"
+	"starter-monorepo/libs/api/domain"
 )
 
 type contactUsecase struct {

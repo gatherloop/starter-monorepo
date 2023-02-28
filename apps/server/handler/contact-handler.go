@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"course-explorer-monorepo/apps/server/core/module"
-	"course-explorer-monorepo/libs/api/domain"
-	"course-explorer-monorepo/libs/api/utils/response"
 	"encoding/json"
 	"net/http"
+	"starter-monorepo/apps/server/core/module"
+	"starter-monorepo/libs/api/domain"
+	"starter-monorepo/libs/api/utils/response"
 	"strconv"
 
 	"github.com/gorilla/mux"
