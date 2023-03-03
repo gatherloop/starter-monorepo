@@ -1,16 +1,16 @@
 package main
 
 import (
-	"course-explorer-monorepo/apps/server/config"
-	"course-explorer-monorepo/apps/server/config/database"
-	"course-explorer-monorepo/apps/server/core/module"
-	"course-explorer-monorepo/apps/server/core/repository"
-	"course-explorer-monorepo/apps/server/handler"
-	"course-explorer-monorepo/libs/api/middlewares"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"starter-monorepo/apps/server/core/module"
+	"starter-monorepo/apps/server/core/repository"
+	"starter-monorepo/apps/server/handler"
+	"starter-monorepo/libs/api/middlewares"
+	"starter-monorepo/libs/api/utils/config"
+	"starter-monorepo/libs/api/utils/database"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"

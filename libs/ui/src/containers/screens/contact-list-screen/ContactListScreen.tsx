@@ -2,7 +2,7 @@ import { Container, PageHeading } from '../../../presentations';
 import { ContactListWidget } from '../../widgets';
 import { GetContactsList } from '../../../domains';
 import { Button, YStack } from 'tamagui';
-import { useRouter } from 'solito/router';
+import { useRouter } from 'next/router';
 
 export interface ContactListScreenProps {
   contactList?: GetContactsList;

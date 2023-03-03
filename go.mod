@@ -1,4 +1,4 @@
-module course-explorer-monorepo
+module starter-monorepo
 
 go 1.17
 

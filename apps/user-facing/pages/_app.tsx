@@ -2,7 +2,7 @@ import { NextThemeProvider, useRootTheme } from '@tamagui/next-theme';
 import { AppProps } from 'next/app';
 import React from 'react';
 import { TamaguiProvider } from 'tamagui';
-import { appConfig } from '@course-explorer-monorepo/ui';
+import { appConfig } from '@starter-monorepo/ui';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();

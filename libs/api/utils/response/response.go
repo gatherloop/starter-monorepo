@@ -1,9 +1,9 @@
 package response
 
 import (
-	"course-explorer-monorepo/libs/api/domain"
 	"encoding/json"
 	"net/http"
+	"starter-monorepo/libs/api/domain"
 )
 
 func Error(w http.ResponseWriter, httpCode int, data interface{}, message string) {
